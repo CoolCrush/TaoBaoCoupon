@@ -18,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,15 +30,24 @@ public class MainActivity extends AppCompatActivity {
     private SelectedFragment selectedFragment;
     private RedPacketFragment redPacketFragment;
     private SearchFragment searchFragment;
+    private Unbinder mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        mBind = ButterKnife.bind(this);
         initFragment();
         initData();
         initListener();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBind != null) {
+            mBind.unbind();
+        }
     }
 
     private void initFragment() {
@@ -55,16 +65,16 @@ public class MainActivity extends AppCompatActivity {
         main_navigation_bar.setOnNavigationItemSelectedListener(item -> {
             LogUtils.d(MainActivity.class, "title -->" + item.getTitle() + "id -->" + item.getItemId());
             if (item.getItemId() == R.id.menu_home) {
-                LogUtils.d(MainActivity.class, "切换到首页");
+                LogUtils.d(this, "切换到首页");
                 switchFragment(homeFragment);
             } else if (item.getItemId() == R.id.menu_selected) {
-                LogUtils.d(MainActivity.class, "切换到精选");
+                LogUtils.d(this, "切换到精选");
                 switchFragment(selectedFragment);
             } else if (item.getItemId() == R.id.menu_packet) {
-                LogUtils.d(MainActivity.class, "切换到特惠");
+                LogUtils.d(this, "切换到特惠");
                 switchFragment(redPacketFragment);
             } else if (item.getItemId() == R.id.menu_search) {
-                LogUtils.d(MainActivity.class, "切换到搜索");
+                LogUtils.d(this, "切换到搜索");
                 switchFragment(searchFragment);
             }
             return true;

@@ -10,27 +10,27 @@ public class LogUtils {
     private static final int WARNING_LEV = 4;
     private static final int ERROR_LEV = 4;
 
-    public static void d(Class clazz, String msg) {
+    public static void d(Object object, String msg) {
         if (currentLev >= DEBUG_LEV) {
-            Log.d(clazz.getSimpleName(), msg);
+            Log.d(object.getClass().getSimpleName(), msg);
         }
     }
 
-    public static void i(Class clazz, String msg) {
+    public static void i(Object object, String msg) {
         if (currentLev >= INFO_LEV) {
-            Log.d(clazz.getSimpleName(), msg);
+            Log.d(object.getClass().getSimpleName(), msg);
         }
     }
 
-    public static void w(Class clazz, String msg) {
+    public static void w(Object object, String msg) {
         if (currentLev >= WARNING_LEV) {
-            Log.d(clazz.getSimpleName(), msg);
+            Log.d(object.getClass().getSimpleName(), msg);
         }
     }
 
-    public static void e(Class clazz, String msg) {
+    public static void e(Object object, String msg) {
         if (currentLev >= ERROR_LEV) {
-            Log.d(clazz.getSimpleName(), msg);
+            Log.d(object.getClass().getSimpleName(), msg);
         }
     }
 }
