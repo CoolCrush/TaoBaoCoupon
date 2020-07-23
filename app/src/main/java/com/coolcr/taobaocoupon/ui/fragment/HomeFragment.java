@@ -1,6 +1,8 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -53,6 +55,11 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     }
 
     @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_home_fragment_layout, container, false);
+    }
+
+    @Override
     protected void loadData() {
         // 加载数据
         mHomePresenter.getCategories();
@@ -60,6 +67,8 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
     @Override
     public void onCategoriesLoaded(Categories categories) {
+
+        setUpState(State.SUCCESS);
         LogUtils.d(this, "onCategoriesLoaded...");
         // 加载的数据就会从这里回来
         if (mHomePagerAdapter != null) {
@@ -68,10 +77,34 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     }
 
     @Override
+    public void onNetworkError() {
+        setUpState(State.ERROR);
+    }
+
+    @Override
+    public void onLoading() {
+        setUpState(State.LOADING);
+    }
+
+    @Override
+    public void onEmpty() {
+        setUpState(State.EMPTY);
+    }
+
+    @Override
     protected void release() {
         // 取消回调注册
         if (mHomePresenter != null) {
             mHomePresenter.unregisterCallback(this);
+        }
+    }
+
+    @Override
+    protected void onRetryClick() {
+        // 网络错误被点击，重新加载数据
+        // 重新加载分类
+        if (mHomePresenter != null) {
+            mHomePresenter.getCategories();
         }
     }
 }

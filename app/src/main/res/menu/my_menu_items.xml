@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_home"
-        android:title="首页"
+        android:title="@string/text_home"
         android:icon="@mipmap/home_normal">
     </item>
     <item
         android:id="@+id/menu_selected"
-        android:title="精选"
+        android:title="@string/text_selected"
         android:icon="@mipmap/select_normal">
     </item>
     <item
         android:id="@+id/menu_packet"
-        android:title="特惠"
+        android:title="@string/text_pretty"
         android:icon="@mipmap/red_packet_normal">
     </item>
     <item
         android:id="@+id/menu_search"
-        android:title="搜索"
+        android:title="@string/text_search"
         android:icon="@mipmap/search_normal">
     </item>
 </menu>
