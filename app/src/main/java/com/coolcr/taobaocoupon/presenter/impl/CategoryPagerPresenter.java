@@ -1,6 +1,7 @@
 package com.coolcr.taobaocoupon.presenter.impl;
 
 import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
+import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
 
 public class CategoryPagerPresenter implements ICategoryPagerPresenter {
     @Override
@@ -19,12 +20,12 @@ public class CategoryPagerPresenter implements ICategoryPagerPresenter {
     }
 
     @Override
-    public void registerViewCallback(ICategoryPagerPresenter callback) {
+    public void registerViewCallback(ICategoryPagerCallback callback) {
 
     }
 
     @Override
-    public void unregisterViewCallback(ICategoryPagerPresenter callback) {
+    public void unregisterViewCallback(ICategoryPagerCallback callback) {
 
     }
 }
