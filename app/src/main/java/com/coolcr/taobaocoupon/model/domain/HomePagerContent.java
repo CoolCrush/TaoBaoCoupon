@@ -49,6 +49,38 @@ public class HomePagerContent {
     }
 
     public static class DataBean {
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "category_id=" + category_id +
+                    ", category_name=" + category_name +
+                    ", click_url='" + click_url + '\'' +
+                    ", commission_rate='" + commission_rate + '\'' +
+                    ", coupon_amount=" + coupon_amount +
+                    ", coupon_click_url='" + coupon_click_url + '\'' +
+                    ", coupon_end_time='" + coupon_end_time + '\'' +
+                    ", coupon_info=" + coupon_info +
+                    ", coupon_remain_count=" + coupon_remain_count +
+                    ", coupon_share_url='" + coupon_share_url + '\'' +
+                    ", coupon_start_fee='" + coupon_start_fee + '\'' +
+                    ", coupon_start_time='" + coupon_start_time + '\'' +
+                    ", coupon_total_count=" + coupon_total_count +
+                    ", item_description='" + item_description + '\'' +
+                    ", item_id=" + item_id +
+                    ", level_one_category_id=" + level_one_category_id +
+                    ", level_one_category_name='" + level_one_category_name + '\'' +
+                    ", nick='" + nick + '\'' +
+                    ", pict_url='" + pict_url + '\'' +
+                    ", seller_id=" + seller_id +
+                    ", shop_title='" + shop_title + '\'' +
+                    ", small_images=" + small_images +
+                    ", title='" + title + '\'' +
+                    ", user_type=" + user_type +
+                    ", volume=" + volume +
+                    ", zk_final_price='" + zk_final_price + '\'' +
+                    '}';
+        }
+
         /**
          * category_id : 213205
          * category_name : null
@@ -324,5 +356,15 @@ public class HomePagerContent {
                 this.string = string;
             }
         }
+    }
+
+    @Override
+    public String toString() {
+        return "HomePagerContent{" +
+                "success=" + success +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

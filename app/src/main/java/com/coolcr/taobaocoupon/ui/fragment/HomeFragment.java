@@ -67,7 +67,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
     @Override
     public void onCategoriesLoaded(Categories categories) {
-
+        // 设置成功加载页面
         setUpState(State.SUCCESS);
         LogUtils.d(this, "onCategoriesLoaded...");
         // 加载的数据就会从这里回来
@@ -77,7 +77,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     }
 
     @Override
-    public void onNetworkError() {
+    public void onError() {
         setUpState(State.ERROR);
     }
 

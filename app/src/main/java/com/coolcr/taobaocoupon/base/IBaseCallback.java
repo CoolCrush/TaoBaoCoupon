@@ -2,9 +2,21 @@ package com.coolcr.taobaocoupon.base;
 
 public interface IBaseCallback {
 
-    void onNetworkError();
-
+    /**
+     * 加载中
+     *
+     */
     void onLoading();
 
+    /**
+     * 网络错误
+     *
+     */
+    void onError();
+
+    /**
+     * 数据为空
+     *
+     */
     void onEmpty();
 }

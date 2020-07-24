@@ -3,6 +3,10 @@
     <color name="colorPrimary">#F5A623</color>
     <color name="colorPrimaryDark">#F5A623</color>
     <color name="colorAccent">#F5A623</color>
+    <color name="colorGrey">#9B9B9B</color>
+
     <color name="colorTabSelected">#fff</color>
     <color name="colorTabNormal">#aaffffff</color>
+    <color name="color_tmall">#D0021B</color>
+    <color name="colorPageBg">#EEEEEE</color>
 </resources>

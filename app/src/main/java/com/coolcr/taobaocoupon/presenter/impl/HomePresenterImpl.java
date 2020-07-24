@@ -47,7 +47,7 @@ public class HomePresenterImpl implements IHomePresenter {
                     // 请求失败
                     LogUtils.e(this, "请求失败...");
                     if (mCallback != null) {
-                        mCallback.onNetworkError();
+                        mCallback.onError();
                     }
                 }
             }
@@ -57,11 +57,12 @@ public class HomePresenterImpl implements IHomePresenter {
                 // 加载失败的结果
                 LogUtils.e(this, "请求错误..." + t);
                 if (mCallback != null) {
-                    mCallback.onNetworkError();
+                    mCallback.onError();
                 }
             }
         });
     }
+
 
     @Override
     public void registerViewCallback(IHomeCallback callback) {
