@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.List;
 
@@ -57,6 +60,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @BindView(R.id.looper_point_container)
     LinearLayout looperPointContainer;
 
+    @BindView(R.id.home_pager_refresh)
+    TwinklingRefreshLayout mTwinklingRefreshLayout;
+
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_home_pager;
@@ -82,10 +88,14 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mLooperPagerAdapter = new LooperPagerAdapter();
         // 设置适配器
         mLooperPager.setAdapter(mLooperPagerAdapter);
+        // 设置RefreshLayout相关属性
+        mTwinklingRefreshLayout.setEnableRefresh(false);
+        mTwinklingRefreshLayout.setEnableLoadmore(true);
     }
 
     @Override
     protected void initListener() {
+        // 轮播图
         mLooperPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -105,6 +115,16 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
             @Override
             public void onPageScrollStateChanged(int state) {
                 LogUtils.d(this, "onPageScrollStateChanged");
+            }
+        });
+        mTwinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                LogUtils.d(this, "onLoadMore...");
+                // TODO: 加载更多内容
+                if (mCategoryPagerPresenter != null) {
+                    mCategoryPagerPresenter.loaderMore(mMaterialId);
+                }
             }
         });
     }
@@ -189,7 +209,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLoaderMoreLoaded(List<HomePagerContent.DataBean> contents) {
-
+        // 添加到适配器数据的底部
+        mContentAdapter.addData(contents);
+        if (mTwinklingRefreshLayout != null) {
+            // 结束刷新
+            mTwinklingRefreshLayout.finishLoadmore();
+        }
+        Toast.makeText(getContext(), "加载完成", Toast.LENGTH_SHORT).show();
     }
 
     @Override

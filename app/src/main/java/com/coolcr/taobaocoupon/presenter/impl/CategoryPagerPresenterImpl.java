@@ -24,6 +24,7 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     private Map<Integer, Integer> pagesInfo = new HashMap<>();
 
     private static final int DEFAULT_PAGE = 1;
+    private Integer mCurrentPage;
 
     private CategoryPagerPresenterImpl() {
 
@@ -46,17 +47,13 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
                 callback.onLoading();
             }
         }
-        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
-        Api api = retrofit.create(Api.class);
         Integer targetPage = pagesInfo.get(categoryId);
         // 判断是否存在改分类的页面
         if (targetPage == null) {
             targetPage = DEFAULT_PAGE;
             pagesInfo.put(categoryId, targetPage);
         }
-        String homePagerUrl = UrlUtils.createHomePagerUrl(categoryId, targetPage);
-        LogUtils.d(this, "home pager url -- > " + homePagerUrl);
-        Call<HomePagerContent> task = api.getHomePagerContent(homePagerUrl);
+        Call<HomePagerContent> task = createTask(categoryId, targetPage);
         task.enqueue(new Callback<HomePagerContent>() {
             @Override
             public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
@@ -77,6 +74,14 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
                 LogUtils.e(this, "onFailure -- > " + t.toString());
             }
         });
+    }
+
+    private Call<HomePagerContent> createTask(int categoryId, Integer targetPage) {
+        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
+        Api api = retrofit.create(Api.class);
+        String homePagerUrl = UrlUtils.createHomePagerUrl(categoryId, targetPage);
+        LogUtils.d(this, "home pager url -- > " + homePagerUrl);
+        return api.getHomePagerContent(homePagerUrl);
     }
 
     private void handleNetworkError(int categoryId) {
@@ -105,7 +110,63 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
 
     @Override
     public void loaderMore(int categoryId) {
+        // 加载更多数据
+        // 1、拿到当前页码
+        mCurrentPage = pagesInfo.get(categoryId);
+        if (mCurrentPage != null) {
+            mCurrentPage = 1;
+        }
+        // 2、页码++
+        mCurrentPage++;
+        // 3、加载数据
+        Call<HomePagerContent> task = createTask(categoryId, mCurrentPage);
+        // 4、处理数据结果
+        task.enqueue(new Callback<HomePagerContent>() {
+            @Override
+            public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
+                // 成功结果
+                int code = response.code();
+                LogUtils.d(this, "result code -- >" + code);
+                if (code == HttpURLConnection.HTTP_OK) {
+                    HomePagerContent result = response.body();
+                    LogUtils.d(this, "result -- >" + result.toString());
+                    handleLoaderResult(result, categoryId);
+                } else {
+                    handleLoaderMoreError(categoryId);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<HomePagerContent> call, Throwable t) {
+                // 请求失败
+                LogUtils.e(this, t.toString());
+                handleLoaderMoreError(categoryId);
+            }
+        });
+    }
+
+    private void handleLoaderResult(HomePagerContent result, int categoryId) {
+        for (ICategoryPagerCallback callback : mCallbacks) {
+            if (callback.getCategoryId() == categoryId) {
+                // 判断是否还有数据
+                if (result == null || result.getData().size() == 0) {
+                    callback.onLoaderMoreEmpty();
+                } else {
+                    callback.onLoaderMoreLoaded(result.getData());
+                }
+            }
+        }
+    }
+
+
+    private void handleLoaderMoreError(int categoryId) {
+        mCurrentPage--;
+        pagesInfo.put(categoryId, mCurrentPage);
+        for (ICategoryPagerCallback callback : mCallbacks) {
+            if (callback.getCategoryId() == categoryId) {
+                callback.onLoaderMoreError();
+            }
+        }
     }
 
     @Override
