@@ -18,6 +18,10 @@ public class LooperPagerAdapter extends PagerAdapter {
 
     private List<HomePagerContent.DataBean> mDataBeans = new ArrayList<>();
 
+    public int getDataSize() {
+        return mDataBeans.size();
+    }
+
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
@@ -26,7 +30,9 @@ public class LooperPagerAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        HomePagerContent.DataBean dataBean = mDataBeans.get(position);
+        // 处理position越界问题
+        int realPosition = position % mDataBeans.size();
+        HomePagerContent.DataBean dataBean = mDataBeans.get(realPosition);
         String coverUrl = UrlUtils.getCoverPath(dataBean.getPict_url());
         ImageView img = new ImageView(container.getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -39,7 +45,7 @@ public class LooperPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return mDataBeans.size();
+        return Integer.MAX_VALUE;
     }
 
     @Override

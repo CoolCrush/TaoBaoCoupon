@@ -3,6 +3,7 @@ package com.coolcr.taobaocoupon.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
 import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
+import com.coolcr.taobaocoupon.utils.SizeUtils;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
 
 import java.util.List;
@@ -52,6 +54,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @BindView(R.id.home_pager_title)
     TextView tvCurrentCategoryTitle;
 
+    @BindView(R.id.looper_point_container)
+    LinearLayout looperPointContainer;
+
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_home_pager;
@@ -77,6 +82,44 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mLooperPagerAdapter = new LooperPagerAdapter();
         // 设置适配器
         mLooperPager.setAdapter(mLooperPagerAdapter);
+    }
+
+    @Override
+    protected void initListener() {
+        mLooperPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // 页面滑动
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // 切换指示器
+                int targetPosition = position % mLooperPagerAdapter.getDataSize();
+                updateLooperIndicator(targetPosition);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                LogUtils.d(this, "onPageScrollStateChanged");
+            }
+        });
+    }
+
+    /**
+     * 切换指示器
+     *
+     * @param targetPosition
+     */
+    private void updateLooperIndicator(int targetPosition) {
+        for (int i = 0; i < looperPointContainer.getChildCount(); i++) {
+            View point = looperPointContainer.getChildAt(i);
+            if (i == targetPosition) {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+        }
     }
 
     @Override
@@ -115,6 +158,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLoading() {
+
         // 数据加载
         setUpState(State.LOADING);
     }
@@ -150,6 +194,26 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         // 获取到轮播图数据
         LogUtils.d(this, "looper size -- > " + contents.size());
         mLooperPagerAdapter.setData(contents);
+        // 设置中间点size不一定为0
+        int dx = (Integer.MAX_VALUE / 2) % contents.size();
+        int targetPosition = (Integer.MAX_VALUE / 2) - dx;
+        LogUtils.d(this, "targetPosition -- >" + targetPosition);
+        mLooperPager.setCurrentItem(targetPosition);
+        looperPointContainer.removeAllViews();
+        // 添加轮播图指示点
+        for (int i = 0; i < contents.size(); i++) {
+            View point = new View(getContext());
+            int size = SizeUtils.dip2px(getContext(), 8);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size, size);
+            layoutParams.leftMargin = SizeUtils.dip2px(getContext(), 5);
+            point.setLayoutParams(layoutParams);
+            if (i == 0) {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            } else {
+                point.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+            looperPointContainer.addView(point);
+        }
     }
 
     @Override
