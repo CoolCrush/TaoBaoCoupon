@@ -85,7 +85,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             Context context = itemView.getContext();
 
             tvTitle.setText(dataBean.getTitle());
-            LogUtils.d(this, "url -- > " + dataBean.getPict_url());
+            //LogUtils.d(this, "url -- > " + dataBean.getPict_url());
             // 加载图片，pic没有https:头
             Glide.with(context).load(UrlUtils.getCoverPath(dataBean.getPict_url())).into(imgCover);
 

@@ -6,10 +6,20 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/looper_pager"
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_marginBottom="14dp" />
+
+    <!--标题-->
+    <include layout="@layout/include_home_pager_title" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_pager_content_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:overScrollMode="never" />
 
 </LinearLayout>

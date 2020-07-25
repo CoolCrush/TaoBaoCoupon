@@ -3,10 +3,12 @@ package com.coolcr.taobaocoupon.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
@@ -15,6 +17,7 @@ import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
 import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.CategoryPagerPresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
+import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
 import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
@@ -28,6 +31,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
     private HomePageContentAdapter mContentAdapter;
+    private LooperPagerAdapter mLooperPagerAdapter;
 
     public HomePagerFragment newInstance(Categories.DataBean category) {
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -40,7 +44,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     }
 
     @BindView(R.id.home_pager_content_list)
-    public RecyclerView mContentList;
+    RecyclerView mContentList;
+
+    @BindView(R.id.looper_pager)
+    ViewPager mLooperPager;
+
+    @BindView(R.id.home_pager_title)
+    TextView tvCurrentCategoryTitle;
 
     @Override
     protected int getRootViewResId() {
@@ -62,6 +72,11 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mContentAdapter = new HomePageContentAdapter();
         // 设置适配器
         mContentList.setAdapter(mContentAdapter);
+
+        // 创建轮播图适配器
+        mLooperPagerAdapter = new LooperPagerAdapter();
+        // 设置适配器
+        mLooperPager.setAdapter(mLooperPagerAdapter);
     }
 
     @Override
@@ -80,6 +95,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         LogUtils.d(this, "materialId -- >" + mMaterialId);
         if (mCategoryPagerPresenter != null) {
             mCategoryPagerPresenter.getContentByCategoryById(mMaterialId);
+        }
+        if (tvCurrentCategoryTitle != null) {
+            tvCurrentCategoryTitle.setText(title);
         }
     }
 
@@ -129,7 +147,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
-
+        // 获取到轮播图数据
+        LogUtils.d(this, "looper size -- > " + contents.size());
+        mLooperPagerAdapter.setData(contents);
     }
 
     @Override
