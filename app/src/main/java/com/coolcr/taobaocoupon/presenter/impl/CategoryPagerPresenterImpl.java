@@ -113,7 +113,7 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
         // 加载更多数据
         // 1、拿到当前页码
         mCurrentPage = pagesInfo.get(categoryId);
-        if (mCurrentPage != null) {
+        if (mCurrentPage == null) {
             mCurrentPage = 1;
         }
         // 2、页码++
