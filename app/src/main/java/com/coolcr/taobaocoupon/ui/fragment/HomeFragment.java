@@ -73,7 +73,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         // 加载的数据就会从这里回来
         if (mHomePagerAdapter != null) {
             // 控制缓存多少页
-             mHomePager.setOffscreenPageLimit(categories.getData().size());
+            mHomePager.setOffscreenPageLimit(2);
             mHomePagerAdapter.setCategories(categories);
         }
     }

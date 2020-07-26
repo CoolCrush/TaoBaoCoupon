@@ -89,7 +89,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         // 设置适配器
         mLooperPager.setAdapter(mLooperPagerAdapter);
         // 设置RefreshLayout相关属性
-        mTwinklingRefreshLayout.setEnableRefresh(true);
+        mTwinklingRefreshLayout.setEnableRefresh(false);
         mTwinklingRefreshLayout.setEnableLoadmore(true);
     }
 

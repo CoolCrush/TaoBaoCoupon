@@ -90,10 +90,16 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             Context context = itemView.getContext();
 
             tvTitle.setText(dataBean.getTitle());
-            //LogUtils.d(this, "url -- > " + dataBean.getPict_url());
+            ViewGroup.LayoutParams layoutParams = imgCover.getLayoutParams();
+            int width = layoutParams.width;
+            int height = layoutParams.height;
+            int coverSize = Math.max(width, height);
+            LogUtils.d(this, "width -- > " + width);
+            LogUtils.d(this, "height -- > " + height);
             // 加载图片，pic没有https:头
-            Glide.with(context).load(UrlUtils.getCoverPath(dataBean.getPict_url())).into(imgCover);
-
+            String coverPath = UrlUtils.getCoverPath(dataBean.getPict_url(), coverSize);
+            LogUtils.d(this, "url -- > " + coverPath);
+            Glide.with(context).load(coverPath).into(imgCover);
             int couponAmount = dataBean.getCoupon_amount();
             String finalPrice = dataBean.getZk_final_price();
             // 字符串模板
@@ -102,7 +108,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             tvOriginalPrice.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             // 卷后价格需要计算
             float resultPrice = Float.parseFloat(finalPrice) - couponAmount;
-            LogUtils.d(this, "result price -- > " + resultPrice);
+            //LogUtils.d(this, "result price -- > " + resultPrice);
             tvFinalPrice.setText(String.format("￥%.2f", resultPrice));
             // 已售出
             tvSellCount.setText(String.format("%1$d已购买", dataBean.getVolume()));

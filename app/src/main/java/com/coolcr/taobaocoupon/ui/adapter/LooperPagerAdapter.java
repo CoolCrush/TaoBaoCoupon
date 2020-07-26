@@ -9,6 +9,7 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -33,7 +34,13 @@ public class LooperPagerAdapter extends PagerAdapter {
         // 处理position越界问题
         int realPosition = position % mDataBeans.size();
         HomePagerContent.DataBean dataBean = mDataBeans.get(realPosition);
-        String coverUrl = UrlUtils.getCoverPath(dataBean.getPict_url());
+        int measuredHeight = container.getMeasuredHeight();
+        int measuredWidth = container.getMeasuredWidth();
+        LogUtils.d(this, "measuredHeight -- > " + measuredHeight);
+        LogUtils.d(this, "measuredWidth -- > " + measuredWidth);
+        int imgSize = Math.max(measuredHeight, measuredWidth) / 2;
+        String coverUrl = UrlUtils.getCoverPath(dataBean.getPict_url(), imgSize);
+        LogUtils.d(this, "coverUrl -- >" + coverUrl);
         ImageView img = new ImageView(container.getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         img.setLayoutParams(layoutParams);
