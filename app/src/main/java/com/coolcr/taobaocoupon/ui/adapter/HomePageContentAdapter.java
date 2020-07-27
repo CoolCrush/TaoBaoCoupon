@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
-import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -35,14 +34,14 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         testCount++;
         // 一开始绘制的条数
-        LogUtils.d(this, "onCreateViewHolder..." + testCount);
+        //LogUtils.d(this, "onCreateViewHolder..." + testCount);
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
         return new InnerHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
-        LogUtils.d(this, "onBindViewHolder... position -- > " + position);
+        //LogUtils.d(this, "onBindViewHolder... position -- > " + position);
         HomePagerContent.DataBean dataBean = mDataBeans.get(position);
         // 设置数据
         holder.setData(dataBean);

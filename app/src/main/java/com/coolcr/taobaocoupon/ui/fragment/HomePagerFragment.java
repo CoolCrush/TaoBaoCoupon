@@ -27,6 +27,8 @@ import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
 import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.List;
 
@@ -70,8 +72,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @BindView(R.id.home_pager_nested_scroller)
     TbNestedScrollView homePagerNestedView;
 
-//    @BindView(R.id.home_pager_refresh)
-//    TwinklingRefreshLayout mTwinklingRefreshLayout;
+    @BindView(R.id.home_pager_refresh)
+    TwinklingRefreshLayout mTwinklingRefreshLayout;
 
     @Override
     protected int getRootViewResId() {
@@ -99,8 +101,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         // 设置适配器
         mLooperPager.setAdapter(mLooperPagerAdapter);
         // 设置RefreshLayout相关属性
-//        mTwinklingRefreshLayout.setEnableRefresh(false);
-//        mTwinklingRefreshLayout.setEnableLoadmore(true);
+        mTwinklingRefreshLayout.setEnableRefresh(false);
+        mTwinklingRefreshLayout.setEnableLoadmore(true);
     }
 
     @Override
@@ -153,24 +155,24 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                 //LogUtils.d(this, "onPageScrollStateChanged");
             }
         });
-//        mTwinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
-//            @Override
-//            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-//                LogUtils.d(this, "onLoadMore...");
-//                if (mCategoryPagerPresenter != null) {
-//                    mCategoryPagerPresenter.loaderMore(mMaterialId);
-//                }
-//            }
-//
-//            @Override
-//            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-//                LogUtils.d(this, "onRefresh...");
-//                if (mCategoryPagerPresenter != null) {
-//                    // TODO:完成下拉刷新
-//                    mCategoryPagerPresenter.reload(mMaterialId);
-//                }
-//            }
-//        });
+        mTwinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                LogUtils.d(this, "onLoadMore...");
+                if (mCategoryPagerPresenter != null) {
+                    mCategoryPagerPresenter.loaderMore(mMaterialId);
+                }
+            }
+
+            @Override
+            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
+                LogUtils.d(this, "onRefresh...");
+                if (mCategoryPagerPresenter != null) {
+                    // TODO:完成下拉刷新
+                    mCategoryPagerPresenter.reload(mMaterialId);
+                }
+            }
+        });
     }
 
     /**
@@ -242,19 +244,19 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLoaderMoreError() {
-//        if (mTwinklingRefreshLayout != null) {
-//            // 结束刷新
-//            mTwinklingRefreshLayout.finishLoadmore();
-//        }
+        if (mTwinklingRefreshLayout != null) {
+            // 结束刷新
+            mTwinklingRefreshLayout.finishLoadmore();
+        }
         ToastUtil.showToast("网络异常，请稍后重试");
     }
 
     @Override
     public void onLoaderMoreEmpty() {
-//        if (mTwinklingRefreshLayout != null) {
-//            // 结束刷新
-//            mTwinklingRefreshLayout.finishLoadmore();
-//        }
+        if (mTwinklingRefreshLayout != null) {
+            // 结束刷新
+            mTwinklingRefreshLayout.finishLoadmore();
+        }
         // 提示用户没有更多数据
         ToastUtil.showToast("我也是有底线的app");
     }
@@ -263,10 +265,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     public void onLoaderMoreLoaded(List<HomePagerContent.DataBean> contents) {
         // 添加到适配器数据的底部
         mContentAdapter.addData(contents);
-//        if (mTwinklingRefreshLayout != null) {
-//            // 结束刷新
-//            mTwinklingRefreshLayout.finishLoadmore();
-//        }
+        if (mTwinklingRefreshLayout != null) {
+            // 结束刷新
+            mTwinklingRefreshLayout.finishLoadmore();
+        }
         ToastUtil.showToast("加载了" + contents.size() + "个商品");
     }
 
