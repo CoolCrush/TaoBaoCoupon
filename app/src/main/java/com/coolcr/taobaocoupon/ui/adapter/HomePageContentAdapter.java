@@ -28,15 +28,21 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
 
     List<HomePagerContent.DataBean> mDataBeans = new ArrayList<>();
 
+    private int testCount = 0;
+
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        testCount++;
+        // 一开始绘制的条数
+        LogUtils.d(this, "onCreateViewHolder..." + testCount);
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
         return new InnerHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
+        LogUtils.d(this, "onBindViewHolder... position -- > " + position);
         HomePagerContent.DataBean dataBean = mDataBeans.get(position);
         // 设置数据
         holder.setData(dataBean);
@@ -94,11 +100,11 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             int width = layoutParams.width;
             int height = layoutParams.height;
             int coverSize = Math.max(width, height);
-            LogUtils.d(this, "width -- > " + width);
-            LogUtils.d(this, "height -- > " + height);
+            //LogUtils.d(this, "width -- > " + width);
+            //LogUtils.d(this, "height -- > " + height);
             // 加载图片，pic没有https:头
             String coverPath = UrlUtils.getCoverPath(dataBean.getPict_url(), coverSize);
-            LogUtils.d(this, "url -- > " + coverPath);
+            //LogUtils.d(this, "url -- > " + coverPath);
             Glide.with(context).load(coverPath).into(imgCover);
             int couponAmount = dataBean.getCoupon_amount();
             String finalPrice = dataBean.getZk_final_price();
