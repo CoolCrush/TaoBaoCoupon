@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -62,6 +63,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     public void addData(List<HomePagerContent.DataBean> contents) {
         mDataBeans.addAll(contents);
         notifyItemRangeChanged(mDataBeans.size(), contents.size());
+        LogUtils.d(this, "商品个数 -- >" + mDataBeans.size());
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder {

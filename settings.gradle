@@ -1,2 +1,2 @@
-rootProject.name='TaoBaoCoupon'
-include ':app'
+rootProject.name = 'TaoBaoCoupon'
+include ':app', ':refreshlibrary'

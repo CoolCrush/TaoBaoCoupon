@@ -46,7 +46,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     // 支持下拉刷新和上拉加载的
-    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    // implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
@@ -61,4 +61,5 @@ dependencies {
     implementation "com.github.tamsiree.RxTool:RxFeature:v2.4.1"
     implementation 'com.google.zxing:android-core:3.3.0'
     implementation 'com.google.zxing:core:3.3.2'
+    implementation project(path: ':refreshlibrary')
 }
