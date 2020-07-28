@@ -1,18 +1,22 @@
-package com.coolcr.taobaocoupon.ui.custom;
+package com.lcodecore.tkrefreshlayout.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class TbNestedScrollView extends NestedScrollView {
 
+    private static final String TAG = "TbNestedScrollView";
     private int mHeaderHeight = 250;
     private int originScroll = 0;
+    private RecyclerView mRecyclerView;
 
     public void setHeaderHeight(int headerHeight) {
         this.mHeaderHeight = headerHeight;
@@ -45,6 +49,9 @@ public class TbNestedScrollView extends NestedScrollView {
         // 滑动的距离
         //LogUtils.d(this, "dy == > " + dy);
         // 设置页面的滑动距离
+        if (target instanceof RecyclerView) {
+            this.mRecyclerView = (RecyclerView) target;
+        }
         if (originScroll < mHeaderHeight) {
             scrollBy(dx, dy);
             consumed[0] = dx;
@@ -66,5 +73,19 @@ public class TbNestedScrollView extends NestedScrollView {
         this.originScroll = t;
         //LogUtils.d(this, "vertical -- >" + t);
         super.onScrollChanged(l, t, oldl, oldt);
+    }
+
+    /**
+     * 判断子类是否已经滑倒底部
+     *
+     * @return
+     */
+    public boolean isViewToBottom() {
+        if (mRecyclerView != null) {
+            boolean isBottom = !mRecyclerView.canScrollVertically(1);
+            Log.d(TAG, "isBottom: -- > " + isBottom);
+            return isBottom;
+        }
+        return false;
     }
 }

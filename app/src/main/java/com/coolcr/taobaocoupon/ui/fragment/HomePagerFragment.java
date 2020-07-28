@@ -21,7 +21,6 @@ import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.CategoryPagerPresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
-import com.coolcr.taobaocoupon.ui.custom.TbNestedScrollView;
 import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
@@ -29,6 +28,7 @@ import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lcodecore.tkrefreshlayout.views.TbNestedScrollView;
 
 import java.util.List;
 
