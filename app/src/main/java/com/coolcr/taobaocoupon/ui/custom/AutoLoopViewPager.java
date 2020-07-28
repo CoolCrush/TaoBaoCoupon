@@ -63,7 +63,7 @@ public class AutoLoopViewPager extends ViewPager {
             int currentItem = getCurrentItem();
             currentItem++;
             setCurrentItem(currentItem);
-            LogUtils.d(this, "looping...");
+            // LogUtils.d(this, "looping...");
             if (isLoop) {
                 // 三秒钟变一次
                 postDelayed(this, mDuration);

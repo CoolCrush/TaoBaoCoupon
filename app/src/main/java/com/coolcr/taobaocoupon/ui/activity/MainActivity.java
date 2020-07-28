@@ -1,13 +1,12 @@
-package com.coolcr.taobaocoupon.ui;
+package com.coolcr.taobaocoupon.ui.activity;
 
-import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.coolcr.taobaocoupon.R;
+import com.coolcr.taobaocoupon.base.BaseActivity;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.ui.fragment.HomeFragment;
 import com.coolcr.taobaocoupon.ui.fragment.RedPacketFragment;
@@ -17,10 +16,8 @@ import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private View main_page_container;
 
@@ -31,25 +28,16 @@ public class MainActivity extends AppCompatActivity {
     private SelectedFragment selectedFragment;
     private RedPacketFragment redPacketFragment;
     private SearchFragment searchFragment;
-    private Unbinder mBind;
     private FragmentManager mFm;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mBind = ButterKnife.bind(this);
+    protected void initView() {
         initFragment();
-        initData();
-        initListener();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBind != null) {
-            mBind.unbind();
-        }
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
     }
 
     private void initFragment() {
@@ -61,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
         switchFragment(homeFragment);
     }
 
-    private void initData() {
+    @Override
+    protected void initEven() {
+        initListener();
     }
 
     private void initListener() {

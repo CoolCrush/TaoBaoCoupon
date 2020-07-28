@@ -1,5 +1,6 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
 import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.CategoryPagerPresenterImpl;
+import com.coolcr.taobaocoupon.ui.activity.TicketActivity;
 import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
 import com.coolcr.taobaocoupon.ui.custom.AutoLoopViewPager;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback {
+public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback, HomePageContentAdapter.OnListItemClickListener, LooperPagerAdapter.OnLooperPagerItemClickListener {
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
@@ -124,6 +126,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initListener() {
+        // 列表的点击事件
+        mContentAdapter.setOnListItemClickListener(this);
+        // 轮播图的点击事件
+        mLooperPagerAdapter.setOnLooperPagerItemClickListener(this);
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -322,5 +328,24 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     protected void release() {
         mCategoryPagerPresenter.unregisterViewCallback(this);
+    }
+
+    @Override
+    public void onItemClick(HomePagerContent.DataBean item) {
+        // 列表内容被点击了
+        LogUtils.d(this, "item click -- >" + item.getTitle());
+        handleItemClick(item);
+    }
+
+    private void handleItemClick(HomePagerContent.DataBean item) {
+        //TODO:处理数据
+        startActivity(new Intent(getContext(), TicketActivity.class));
+    }
+
+    @Override
+    public void onLooperItemClick(HomePagerContent.DataBean item) {
+        // 轮播图被点击
+        LogUtils.d(this, "img click -- > " + item.getTitle());
+        handleItemClick(item);
     }
 }

@@ -29,6 +29,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     List<HomePagerContent.DataBean> mDataBeans = new ArrayList<>();
 
     private int testCount = 0;
+    private OnListItemClickListener mItemClickListener = null;
 
     @NonNull
     @Override
@@ -46,6 +47,14 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
         HomePagerContent.DataBean dataBean = mDataBeans.get(position);
         // 设置数据
         holder.setData(dataBean);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomePagerContent.DataBean item = mDataBeans.get(position);
+                mItemClickListener.onItemClick(item);
+            }
+        });
     }
 
     @Override
@@ -120,5 +129,13 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             // 已售出
             tvSellCount.setText(String.format("%1$d已购买", dataBean.getVolume()));
         }
+    }
+
+    public void setOnListItemClickListener(OnListItemClickListener listener) {
+        this.mItemClickListener = listener;
+    }
+
+    public interface OnListItemClickListener {
+        void onItemClick(HomePagerContent.DataBean item);
     }
 }

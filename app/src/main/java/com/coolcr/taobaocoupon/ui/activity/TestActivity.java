@@ -1,4 +1,4 @@
-package com.coolcr.taobaocoupon.ui;
+package com.coolcr.taobaocoupon.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
