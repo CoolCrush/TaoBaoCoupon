@@ -21,6 +21,7 @@ import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.CategoryPagerPresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
+import com.coolcr.taobaocoupon.ui.custom.AutoLoopViewPager;
 import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
@@ -55,7 +56,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     RecyclerView mContentList;
 
     @BindView(R.id.looper_pager)
-    ViewPager mLooperPager;
+    AutoLoopViewPager mLooperPager;
 
     @BindView(R.id.home_pager_title)
     TextView tvCurrentCategoryTitle;
@@ -78,6 +79,22 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_home_pager;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // 可见的时候调用轮播
+        mLooperPager.startLoop();
+        LogUtils.d(this, "onResume...");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // 不可见的暂停轮播
+        mLooperPager.stopLoop();
+        LogUtils.d(this, "onPause...");
     }
 
     @Override
