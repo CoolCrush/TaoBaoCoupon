@@ -26,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.main_navigation_bar)
     BottomNavigationView main_navigation_bar;
+
     private HomeFragment homeFragment;
     private SelectedFragment selectedFragment;
     private RedPacketFragment redPacketFragment;
     private SearchFragment searchFragment;
     private Unbinder mBind;
+    private FragmentManager mFm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         selectedFragment = new SelectedFragment();
         redPacketFragment = new RedPacketFragment();
         searchFragment = new SearchFragment();
+        mFm = getSupportFragmentManager();
         switchFragment(homeFragment);
     }
 
@@ -82,14 +85,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * 上一次显示的fragment
+     */
+    private BaseFragment lastOneFragment = null;
+
+    /**
      * 切换Fragment
      */
-    private void switchFragment(BaseFragment fragment) {
-        FragmentManager fm = getSupportFragmentManager();
+    private void switchFragment(BaseFragment targetFragment) {
+        // 修改成add和hide的方式控制Fragment的切换
         // 开始事务
-        FragmentTransaction transaction = fm.beginTransaction();
+        FragmentTransaction transaction = mFm.beginTransaction();
+        if (!targetFragment.isAdded()) {
+            transaction.add(R.id.main_page_container, targetFragment);
+        } else {
+            transaction.show(targetFragment);
+        }
+        if (lastOneFragment != null) {
+            transaction.hide(lastOneFragment);
+        }
+        lastOneFragment = targetFragment;
         // 取代
-        transaction.replace(R.id.main_page_container, fragment);
+        //transaction.replace(R.id.main_page_container, targetFragment);
         // 提交事务
         transaction.commit();
     }

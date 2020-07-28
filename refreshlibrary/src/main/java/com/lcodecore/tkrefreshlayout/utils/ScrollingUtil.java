@@ -191,7 +191,6 @@ public class ScrollingUtil {
     }
 
     public static boolean isViewGroupToBottom(ViewGroup viewGroup) {
-        // TODO:判断是否触底
         // 判断是否触底
         View subChildView = viewGroup.getChildAt(0);
 //        return false;

@@ -110,13 +110,16 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                if (homeHeaderContainer == null) {
+                    return;
+                }
                 // 获取要滑走的header的高度
                 int headerHeight = homeHeaderContainer.getMeasuredHeight();
-                LogUtils.d(HomePagerFragment.this, "headerHeight -- > " + headerHeight);
+                //LogUtils.d(HomePagerFragment.this, "headerHeight -- > " + headerHeight);
                 homePagerNestedView.setHeaderHeight(headerHeight);
 
                 int measuredHeight = homePagerParent.getMeasuredHeight();
-                LogUtils.d(HomePagerFragment.this, "measuredHeight -- > " + measuredHeight);
+                //LogUtils.d(HomePagerFragment.this, "measuredHeight -- > " + measuredHeight);
                 ViewGroup.LayoutParams layoutParams = mContentList.getLayoutParams();
                 layoutParams.height = measuredHeight;
                 mContentList.setLayoutParams(layoutParams);

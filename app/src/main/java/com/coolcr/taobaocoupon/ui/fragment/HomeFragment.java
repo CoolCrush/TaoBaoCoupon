@@ -1,5 +1,6 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,18 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_home;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LogUtils.d(this, "onCreateView...");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onDestroy() {
+        LogUtils.d(this, "onDestroy...");
+        super.onDestroy();
     }
 
     @Override

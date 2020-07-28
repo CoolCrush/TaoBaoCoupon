@@ -2,7 +2,6 @@ package com.lcodecore.tkrefreshlayout.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -83,7 +82,7 @@ public class TbNestedScrollView extends NestedScrollView {
     public boolean isViewToBottom() {
         if (mRecyclerView != null) {
             boolean isBottom = !mRecyclerView.canScrollVertically(1);
-            Log.d(TAG, "isBottom: -- > " + isBottom);
+            //Log.d(TAG, "isBottom: -- > " + isBottom);
             return isBottom;
         }
         return false;
