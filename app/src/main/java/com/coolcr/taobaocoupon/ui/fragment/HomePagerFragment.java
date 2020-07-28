@@ -19,13 +19,14 @@ import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
 import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
-import com.coolcr.taobaocoupon.presenter.impl.CategoryPagerPresenterImpl;
+import com.coolcr.taobaocoupon.presenter.ITicketPresenter;
 import com.coolcr.taobaocoupon.ui.activity.TicketActivity;
 import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
 import com.coolcr.taobaocoupon.ui.custom.AutoLoopViewPager;
 import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
+import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
 import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
@@ -219,7 +220,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initPresenter() {
-        mCategoryPagerPresenter = CategoryPagerPresenterImpl.getInstance();
+        mCategoryPagerPresenter = PresenterManger.getInstance().getCategoryPagerPresenter();
         mCategoryPagerPresenter.registerViewCallback(this);
     }
 
@@ -339,6 +340,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     private void handleItemClick(HomePagerContent.DataBean item) {
         //TODO:处理数据
+        String title = item.getTitle();
+        String url = item.getClick_url();
+        String cover = item.getPict_url();
+        // 拿到ticketPresenter对象
+        ITicketPresenter ticketPresenter = PresenterManger.getInstance().getTicketPresenter();
+        ticketPresenter.getTicket(title, url, cover);
         startActivity(new Intent(getContext(), TicketActivity.class));
     }
 

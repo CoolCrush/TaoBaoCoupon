@@ -26,19 +26,6 @@ public class CategoryPagerPresenterImpl implements ICategoryPagerPresenter {
     private static final int DEFAULT_PAGE = 1;
     private Integer mCurrentPage;
 
-    private CategoryPagerPresenterImpl() {
-
-    }
-
-    private static ICategoryPagerPresenter sInstance = null;
-
-    public static ICategoryPagerPresenter getInstance() {
-        if (sInstance == null) {
-            sInstance = new CategoryPagerPresenterImpl();
-        }
-        return sInstance;
-    }
-
     @Override
     public void getContentByCategoryById(int categoryId) {
         // 根据分类Id去加载内容

@@ -12,9 +12,9 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.presenter.IHomePresenter;
-import com.coolcr.taobaocoupon.presenter.impl.HomePresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.HomePagerAdapter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
+import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.view.IHomeCallback;
 import com.google.android.material.tabs.TabLayout;
 
@@ -63,7 +63,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     @Override
     protected void initPresenter() {
         // 创建Presenter
-        mHomePresenter = new HomePresenterImpl();
+        mHomePresenter = PresenterManger.getInstance().getHomePresenter();
         mHomePresenter.registerViewCallback(this);
     }
 
