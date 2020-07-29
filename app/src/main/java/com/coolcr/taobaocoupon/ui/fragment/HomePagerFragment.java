@@ -338,6 +338,11 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         handleItemClick(item);
     }
 
+    /**
+     * 条目的点击事件
+     *
+     * @param item
+     */
     private void handleItemClick(HomePagerContent.DataBean item) {
         //TODO:处理数据
         String title = item.getTitle();

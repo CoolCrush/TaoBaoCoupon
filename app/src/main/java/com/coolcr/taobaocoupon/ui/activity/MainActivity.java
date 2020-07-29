@@ -50,6 +50,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void initPresenter() {
+
+    }
+
+    @Override
     protected void initEven() {
         initListener();
     }

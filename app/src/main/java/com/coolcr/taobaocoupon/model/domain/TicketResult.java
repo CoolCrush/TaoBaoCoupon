@@ -2,12 +2,23 @@ package com.coolcr.taobaocoupon.model.domain;
 
 public class TicketResult {
 
+    @Override
+    public String toString() {
+        return "TicketResult{" +
+                "success=" + success +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     /**
      * success : true
      * code : 10000
      * message : 淘宝口令构建成功!
      * data : {"tbk_tpwd_create_response":{"data":{"model":"￥xhQoYC66sMX￥"},"request_id":"64jzpdn6m026"}}
      */
+
 
     private boolean success;
     private int code;
@@ -47,9 +58,17 @@ public class TicketResult {
     }
 
     public static class DataBeanX {
+        @Override
+        public String toString() {
+            return "DataBeanX{" +
+                    "tbk_tpwd_create_response=" + tbk_tpwd_create_response +
+                    '}';
+        }
+
         /**
          * tbk_tpwd_create_response : {"data":{"model":"￥xhQoYC66sMX￥"},"request_id":"64jzpdn6m026"}
          */
+
 
         private TbkTpwdCreateResponseBean tbk_tpwd_create_response;
 
@@ -62,10 +81,19 @@ public class TicketResult {
         }
 
         public static class TbkTpwdCreateResponseBean {
+            @Override
+            public String toString() {
+                return "TbkTpwdCreateResponseBean{" +
+                        "data=" + data +
+                        ", request_id='" + request_id + '\'' +
+                        '}';
+            }
+
             /**
              * data : {"model":"￥xhQoYC66sMX￥"}
              * request_id : 64jzpdn6m026
              */
+
 
             private DataBean data;
             private String request_id;
@@ -87,6 +115,13 @@ public class TicketResult {
             }
 
             public static class DataBean {
+                @Override
+                public String toString() {
+                    return "DataBean{" +
+                            "model='" + model + '\'' +
+                            '}';
+                }
+
                 /**
                  * model : ￥xhQoYC66sMX￥
                  */

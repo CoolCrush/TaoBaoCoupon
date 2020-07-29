@@ -19,7 +19,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         mBind = ButterKnife.bind(this);
         initView();
         initEven();
+        initPresenter();
     }
+
+    protected abstract void initPresenter();
 
     /**
      * 需要就复写
@@ -36,6 +39,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mBind != null) {
             mBind.unbind();
         }
+        this.release();
+    }
+
+    /**
+     * 子类需要释放资源，覆盖此方法
+     */
+    protected void release() {
+
     }
 
     protected abstract int getLayoutResId();
