@@ -1,6 +1,7 @@
 package com.coolcr.taobaocoupon.ui.activity;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import butterknife.BindView;
 
 public class TicketActivity extends BaseActivity implements ITicketCallback {
 
+    @BindView(R.id.ticket_back)
+    ImageView imgBack;
     @BindView(R.id.ticket_cover)
     ImageView imgCover;
     @BindView(R.id.ticket_code)
@@ -46,6 +49,16 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
     @Override
     protected void initView() {
 
+    }
+
+    @Override
+    protected void initEven() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @Override

@@ -13,4 +13,8 @@
         android:layout_height="wrap_content"
         android:text="测试Toast" />
 
+    <com.coolcr.taobaocoupon.ui.custom.LoadingView
+        android:layout_width="33dp"
+        android:layout_height="33dp" />
+
 </LinearLayout>
