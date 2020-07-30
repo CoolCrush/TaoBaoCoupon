@@ -22,12 +22,21 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
 
     @BindView(R.id.ticket_back)
     ImageView imgBack;
+
     @BindView(R.id.ticket_cover)
     ImageView imgCover;
+
     @BindView(R.id.ticket_code)
     TextView tvTicketCode;
+
     @BindView(R.id.ticket_copy_or_open_btn)
     TextView mOpenOrCopy;
+
+    @BindView(R.id.ticket_cover_loading)
+    View loadingView;
+
+    @BindView(R.id.ticket_load_retry)
+    TextView tvLoadRetry;
 
     private ITicketPresenter mTicketPresenter;
 
@@ -82,16 +91,29 @@ public class TicketActivity extends BaseActivity implements ITicketCallback {
         if (result != null && result.getData().getTbk_tpwd_create_response() != null) {
             tvTicketCode.setText(result.getData().getTbk_tpwd_create_response().getData().getModel());
         }
+        if (loadingView != null) {
+            loadingView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onLoading() {
-
+        if (tvLoadRetry != null) {
+            tvLoadRetry.setVisibility(View.GONE);
+        }
+        if (loadingView != null) {
+            loadingView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onError() {
-
+        if (loadingView != null) {
+            loadingView.setVisibility(View.GONE);
+        }
+        if (tvLoadRetry != null) {
+            tvLoadRetry.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
