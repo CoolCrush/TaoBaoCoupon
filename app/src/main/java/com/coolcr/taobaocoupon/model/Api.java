@@ -14,6 +14,11 @@ import retrofit2.http.Url;
 
 public interface Api {
 
+    /**
+     * 获取全部分类
+     *
+     * @return
+     */
     @GET("discovery/categories")
     Call<Categories> getCategories();
 
