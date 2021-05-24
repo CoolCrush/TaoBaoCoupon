@@ -6,6 +6,7 @@ import com.coolcr.taobaocoupon.model.domain.SelectedPageCategory;
 import com.coolcr.taobaocoupon.presenter.ISelectedPagePresenter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.RetrofitManager;
+import com.coolcr.taobaocoupon.utils.UrlUtils;
 import com.coolcr.taobaocoupon.view.ISelectedCallback;
 
 import java.net.HttpURLConnection;
@@ -64,36 +65,35 @@ public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
     }
 
     @Override
-    public void getContentByCategoryId(SelectedPageCategory.DataBean item) {
+    public void getContentByCategory(SelectedPageCategory.DataBean item) {
         this.mCurrentCategoryItem = item;
-        if (mCurrentCategoryItem != null) {
-            Call<SelectedContent> task = mApi.getSelectedContent(item.getFavorites_id());
-            task.enqueue(new Callback<SelectedContent>() {
-                @Override
-                public void onResponse(Call<SelectedContent> call, Response<SelectedContent> response) {
-                    int code = response.code();
-                    if (code == HttpURLConnection.HTTP_OK) {
-                        SelectedContent result = response.body();
-                        if (mViewCallback != null) {
-                            mViewCallback.onContentLoad(result);
-                        }
-                    } else {
-                        onLoadError();
+        String contentUrl = UrlUtils.getSelectedPageContentUrl(item.getFavorites_id());
+        Call<SelectedContent> task = mApi.getSelectedContent(contentUrl);
+        task.enqueue(new Callback<SelectedContent>() {
+            @Override
+            public void onResponse(Call<SelectedContent> call, Response<SelectedContent> response) {
+                int code = response.code();
+                if (code == HttpURLConnection.HTTP_OK) {
+                    SelectedContent result = response.body();
+                    if (mViewCallback != null) {
+                        mViewCallback.onContentLoad(result);
                     }
-                }
-
-                @Override
-                public void onFailure(Call<SelectedContent> call, Throwable t) {
+                } else {
                     onLoadError();
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onFailure(Call<SelectedContent> call, Throwable t) {
+                onLoadError();
+            }
+        });
     }
 
     @Override
     public void reloadContent() {
         if (mCurrentCategoryItem != null) {
-            this.getContentByCategoryId(mCurrentCategoryItem);
+            this.getContentByCategory(mCurrentCategoryItem);
         }
     }
 

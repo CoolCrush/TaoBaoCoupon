@@ -16,7 +16,7 @@ public interface ISelectedPagePresenter extends IBasePresenter<ISelectedCallback
      *
      * @param item
      */
-    void getContentByCategoryId(SelectedPageCategory.DataBean item);
+    void getContentByCategory(SelectedPageCategory.DataBean item);
 
     /**
      * 重新加载内容

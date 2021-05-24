@@ -3,6 +3,15 @@ package com.coolcr.taobaocoupon.model.domain;
 import java.util.List;
 
 public class SelectedPageCategory {
+    @Override
+    public String toString() {
+        return "SelectedPageCategory{" +
+                "success=" + success +
+                ", code=" + code +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 
     /**
      * success : true
@@ -49,6 +58,15 @@ public class SelectedPageCategory {
     }
 
     public static class DataBean {
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "type=" + type +
+                    ", favorites_id=" + favorites_id +
+                    ", favorites_title='" + favorites_title + '\'' +
+                    '}';
+        }
+
         /**
          * type : 1
          * favorites_id : 2011849236

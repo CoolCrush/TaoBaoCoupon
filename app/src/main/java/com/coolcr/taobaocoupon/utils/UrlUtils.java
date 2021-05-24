@@ -20,4 +20,14 @@ public class UrlUtils {
             return "https:" + url;
         }
     }
+
+    /**
+     * 拼接精选分类url
+     *
+     * @param favorites_id
+     * @return
+     */
+    public static String getSelectedPageContentUrl(int favorites_id) {
+        return "recommend/" + favorites_id;
+    }
 }
