@@ -9,5 +9,4 @@ public interface IHomePresenter extends IBasePresenter<IHomeCallback> {
      */
     void getCategories();
 
-
 }

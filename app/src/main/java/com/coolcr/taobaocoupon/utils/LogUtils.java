@@ -6,9 +6,9 @@ public class LogUtils {
     // 当前等级
     private static int currentLev = 4;
     private static final int DEBUG_LEV = 4;
-    private static final int INFO_LEV = 4;
-    private static final int WARNING_LEV = 4;
-    private static final int ERROR_LEV = 4;
+    private static final int INFO_LEV = 3;
+    private static final int WARNING_LEV = 2;
+    private static final int ERROR_LEV = 1;
 
     public static void d(Object object, String msg) {
         if (currentLev >= DEBUG_LEV) {
