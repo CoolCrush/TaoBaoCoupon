@@ -9,7 +9,7 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseActivity;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.ui.fragment.HomeFragment;
-import com.coolcr.taobaocoupon.ui.fragment.RedPacketFragment;
+import com.coolcr.taobaocoupon.ui.fragment.OnSellFragment;
 import com.coolcr.taobaocoupon.ui.fragment.SearchFragment;
 import com.coolcr.taobaocoupon.ui.fragment.SelectedFragment;
 import com.coolcr.taobaocoupon.utils.LogUtils;
@@ -26,7 +26,7 @@ public class MainActivity extends BaseActivity {
 
     private HomeFragment homeFragment;
     private SelectedFragment selectedFragment;
-    private RedPacketFragment redPacketFragment;
+    private OnSellFragment mOnSellFragment;
     private SearchFragment searchFragment;
     private FragmentManager mFm;
 
@@ -43,7 +43,7 @@ public class MainActivity extends BaseActivity {
     private void initFragment() {
         homeFragment = new HomeFragment();
         selectedFragment = new SelectedFragment();
-        redPacketFragment = new RedPacketFragment();
+        mOnSellFragment = new OnSellFragment();
         searchFragment = new SearchFragment();
         mFm = getSupportFragmentManager();
         switchFragment(homeFragment);
@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity {
                 switchFragment(selectedFragment);
             } else if (item.getItemId() == R.id.menu_packet) {
                 LogUtils.d(this, "切换到特惠");
-                switchFragment(redPacketFragment);
+                switchFragment(mOnSellFragment);
             } else if (item.getItemId() == R.id.menu_search) {
                 LogUtils.d(this, "切换到搜索");
                 switchFragment(searchFragment);

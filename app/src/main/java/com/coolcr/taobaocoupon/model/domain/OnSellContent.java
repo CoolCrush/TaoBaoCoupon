@@ -112,7 +112,7 @@ public class OnSellContent {
                     private String level_one_category_name;
                     private String nick;
                     private String pict_url;
-                    private Integer seller_id;
+                    private Long seller_id;
                     private Object shop_title;
                     private SmallImagesBean small_images;
                     private String title;
@@ -272,11 +272,11 @@ public class OnSellContent {
                         this.pict_url = pict_url;
                     }
 
-                    public Integer getSeller_id() {
+                    public Long getSeller_id() {
                         return seller_id;
                     }
 
-                    public void setSeller_id(Integer seller_id) {
+                    public void setSeller_id(Long seller_id) {
                         this.seller_id = seller_id;
                     }
 
