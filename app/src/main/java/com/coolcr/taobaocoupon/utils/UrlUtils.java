@@ -34,4 +34,14 @@ public class UrlUtils {
     public static String getSelectedPageContentUrl(int favorites_id) {
         return "recommend/" + favorites_id;
     }
+
+    /**
+     * 拼接特惠接口url
+     *
+     * @param page
+     * @return
+     */
+    public static String getOnSellContentUrl(int page) {
+        return "onSell/" + page;
+    }
 }

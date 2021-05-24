@@ -3,6 +3,7 @@ package com.coolcr.taobaocoupon.model;
 
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.model.domain.OnSellContent;
 import com.coolcr.taobaocoupon.model.domain.SelectedContent;
 import com.coolcr.taobaocoupon.model.domain.SelectedPageCategory;
 import com.coolcr.taobaocoupon.model.domain.TicketParams;
@@ -35,10 +36,10 @@ public interface Api {
 
     /**
      * 根据分类id获取内容
-     *
-     * @param categoryId
-     * @return
      */
     @GET
     Call<SelectedContent> getSelectedContent(@Url String url);
+
+    @GET
+    Call<OnSellContent> getOnSellContent(@Url String url);
 }
