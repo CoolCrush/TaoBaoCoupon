@@ -3,6 +3,8 @@ package com.coolcr.taobaocoupon.model;
 
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.model.domain.SelectedContent;
+import com.coolcr.taobaocoupon.model.domain.SelectedPageCategory;
 import com.coolcr.taobaocoupon.model.domain.TicketParams;
 import com.coolcr.taobaocoupon.model.domain.TicketResult;
 
@@ -10,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface Api {
@@ -27,4 +30,16 @@ public interface Api {
 
     @POST("tpwd")
     Call<TicketResult> getTicket(@Body TicketParams ticketParams);
+
+    @GET("recommend/categories")
+    Call<SelectedPageCategory> getSelectedPageCategories();
+
+    /**
+     * 根据分类id获取内容
+     *
+     * @param categoryId
+     * @return
+     */
+    @GET("/recommend/categoryId")
+    Call<SelectedContent> getSelectedContent(@Query("categoryId") int categoryId);
 }

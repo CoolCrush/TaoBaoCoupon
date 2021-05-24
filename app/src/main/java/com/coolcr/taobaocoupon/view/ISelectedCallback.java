@@ -20,4 +20,6 @@ public interface ISelectedCallback extends IBaseCallback {
      * @param content
      */
     void onContentLoad(SelectedContent content);
+
+
 }

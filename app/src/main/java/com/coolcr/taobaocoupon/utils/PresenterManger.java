@@ -5,6 +5,7 @@ import com.coolcr.taobaocoupon.presenter.IHomePresenter;
 import com.coolcr.taobaocoupon.presenter.ITicketPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.CategoryPagerPresenterImpl;
 import com.coolcr.taobaocoupon.presenter.impl.HomePresenterImpl;
+import com.coolcr.taobaocoupon.presenter.impl.SelectedPagePresenterImpl;
 import com.coolcr.taobaocoupon.presenter.impl.TicketPresenterImpl;
 
 public class PresenterManger {
@@ -14,6 +15,7 @@ public class PresenterManger {
     private final ICategoryPagerPresenter mCategoryPagerPresenter;
     private final IHomePresenter mHomePresenter;
     private final ITicketPresenter mTicketPresenter;
+    private final SelectedPagePresenterImpl mSelectedPagePresenter;
 
     public ITicketPresenter getTicketPresenter() {
         return mTicketPresenter;
@@ -31,10 +33,15 @@ public class PresenterManger {
         return ourInstance;
     }
 
+    public SelectedPagePresenterImpl getSelectedPagePresenter() {
+        return mSelectedPagePresenter;
+    }
+
     private PresenterManger() {
         mCategoryPagerPresenter = new CategoryPagerPresenterImpl();
         mHomePresenter = new HomePresenterImpl();
         mTicketPresenter = new TicketPresenterImpl();
+        mSelectedPagePresenter = new SelectedPagePresenterImpl();
     }
 
 }
