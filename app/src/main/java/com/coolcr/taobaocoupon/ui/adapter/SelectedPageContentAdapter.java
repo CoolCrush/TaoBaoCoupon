@@ -26,6 +26,7 @@ import butterknife.ButterKnife;
 public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPageContentAdapter.InnerHolder> {
 
     private List<SelectedContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mData = new ArrayList<>();
+    private OnSelectContentItemClickListener mItemClickListener = null;
 
     @NonNull
     @Override
@@ -38,6 +39,12 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
     public void onBindViewHolder(@NonNull SelectedPageContentAdapter.InnerHolder holder, int position) {
         SelectedContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean = mData.get(position);
         holder.setData(dataBean);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mItemClickListener.onItemClick(dataBean);
+            }
+        });
     }
 
     @Override
@@ -93,5 +100,13 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
                 afterOffPriceTv.setText(String.format("原价：%s元", dataBean.getReserve_price()));
             }
         }
+    }
+
+    public void setItemClickListener(OnSelectContentItemClickListener itemClickListener) {
+        mItemClickListener = itemClickListener;
+    }
+
+    public interface OnSelectContentItemClickListener {
+        void onItemClick(SelectedContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean);
     }
 }

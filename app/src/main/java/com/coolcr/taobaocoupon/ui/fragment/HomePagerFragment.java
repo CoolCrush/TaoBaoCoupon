@@ -345,7 +345,6 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
      * @param item
      */
     private void handleItemClick(HomePagerContent.DataBean item) {
-        //TODO:处理数据
         String title = item.getTitle();
         // 详情的地址
         String url = item.getCoupon_click_url();

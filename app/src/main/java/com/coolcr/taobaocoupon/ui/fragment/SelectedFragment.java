@@ -1,6 +1,8 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -12,7 +14,9 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.SelectedContent;
 import com.coolcr.taobaocoupon.model.domain.SelectedPageCategory;
+import com.coolcr.taobaocoupon.presenter.ITicketPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.SelectedPagePresenterImpl;
+import com.coolcr.taobaocoupon.ui.activity.TicketActivity;
 import com.coolcr.taobaocoupon.ui.adapter.SelectedPageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.SelectedPageLeftAdapter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
@@ -43,6 +47,13 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
         mSelectedPagePresenter = PresenterManger.getInstance().getSelectedPagePresenter();
         mSelectedPagePresenter.registerViewCallback(this);
         mSelectedPagePresenter.getCategories();
+    }
+
+    @Override
+    protected void onRetryClick() {
+        if (mSelectedPagePresenter != null) {
+            mSelectedPagePresenter.reloadContent();
+        }
     }
 
     @Override
@@ -94,6 +105,24 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
                 mSelectedPagePresenter.getContentByCategory(dataBean);
             }
         });
+
+        mContentAdapter.setItemClickListener(new SelectedPageContentAdapter.OnSelectContentItemClickListener() {
+            @Override
+            public void onItemClick(SelectedContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean) {
+                LogUtils.d(SelectedFragment.this, "click title -- > " + dataBean.getTitle());
+                String title = dataBean.getTitle();
+                // 详情的地址
+                String url = dataBean.getCoupon_click_url();
+                if (TextUtils.isEmpty(url)) {
+                    url = dataBean.getClick_url();
+                }
+                String cover = dataBean.getPict_url();
+                // 拿到ticketPresenter对象
+                ITicketPresenter ticketPresenter = PresenterManger.getInstance().getTicketPresenter();
+                ticketPresenter.getTicket(title, url, cover);
+                startActivity(new Intent(getContext(), TicketActivity.class));
+            }
+        });
     }
 
     @Override
@@ -120,7 +149,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
 
     @Override
     public void onError() {
-
+        setUpState(State.ERROR);
     }
 
     @Override
