@@ -64,6 +64,18 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
     }
 
     @Override
+    protected void initListener() {
+        super.initListener();
+        mLeftAdapter.setLeftItemClickListener(new SelectedPageLeftAdapter.OnLeftItemClickListener() {
+            @Override
+            public void onLeftItemClick(SelectedPageCategory.DataBean dataBean) {
+                //左边的分类被点击
+                LogUtils.d(SelectedFragment.this, "click title -- > " + dataBean.getFavorites_title());
+            }
+        });
+    }
+
+    @Override
     public void onCategoriesLoad(SelectedPageCategory categories) {
         //分类内容返回
         LogUtils.d(this, "categories -- > " + categories.toString());
