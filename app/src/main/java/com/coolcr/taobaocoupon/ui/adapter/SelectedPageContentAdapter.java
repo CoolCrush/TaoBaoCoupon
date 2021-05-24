@@ -1,6 +1,7 @@
 package com.coolcr.taobaocoupon.ui.adapter;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,9 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
         @BindView(R.id.selected_after_off_price_tv)
         TextView afterOffPriceTv;
 
+        @BindView(R.id.selected_buy_tv)
+        TextView buyTv;
+
 
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,8 +82,16 @@ public class SelectedPageContentAdapter extends RecyclerView.Adapter<SelectedPag
             titleTv.setText(dataBean.getTitle());
             String coverPath = UrlUtils.getCoverPath(dataBean.getPict_url(), 400);
             Glide.with(itemView.getContext()).load(coverPath).into(coverImg);
-            thriftyTv.setText(String.format("领卷省%d元", dataBean.getCoupon_amount()));
-            afterOffPriceTv.setText(String.format("原价：%s元", dataBean.getReserve_price()));
+            if (TextUtils.isEmpty(dataBean.getCoupon_click_url())) {
+                buyTv.setVisibility(View.GONE);
+                thriftyTv.setVisibility(View.GONE);
+                afterOffPriceTv.setText("晚啦，优惠卷抢光了");
+            } else {
+                buyTv.setVisibility(View.VISIBLE);
+                thriftyTv.setVisibility(View.VISIBLE);
+                thriftyTv.setText(String.format("领卷省%d元", dataBean.getCoupon_amount()));
+                afterOffPriceTv.setText(String.format("原价：%s元", dataBean.getReserve_price()));
+            }
         }
     }
 }

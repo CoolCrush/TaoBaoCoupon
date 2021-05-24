@@ -102,7 +102,6 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
         //分类内容返回
         LogUtils.d(this, "categories -- > " + categories.toString());
         mLeftAdapter.setData(categories);
-
     }
 
     @Override
@@ -111,6 +110,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
         if (content.getData() != null) {
             mContentAdapter.setData(content);
         }
+        contentList.scrollToPosition(0);
     }
 
     @Override
