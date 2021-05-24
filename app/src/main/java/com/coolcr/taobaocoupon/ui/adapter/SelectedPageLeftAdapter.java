@@ -67,6 +67,9 @@ public class SelectedPageLeftAdapter extends RecyclerView.Adapter<SelectedPageLe
             mData.addAll(categories.getData());
             notifyDataSetChanged();
         }
+        if (mData.size() > 0) {
+            mLeftItemClickListener.onLeftItemClick(mData.get(0));
+        }
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder {
