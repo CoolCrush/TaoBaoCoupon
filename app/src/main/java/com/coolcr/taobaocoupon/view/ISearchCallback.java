@@ -1,6 +1,7 @@
 package com.coolcr.taobaocoupon.view;
 
 import com.coolcr.taobaocoupon.base.IBaseCallback;
+import com.coolcr.taobaocoupon.model.domain.HotWordsContent;
 import com.coolcr.taobaocoupon.model.domain.SearchResult;
 
 import java.util.List;
@@ -24,14 +25,14 @@ public interface ISearchCallback extends IBaseCallback {
      *
      * @param result
      */
-    void onSearchSuccess(List<SearchResult> result);
+    void onSearchSuccess(SearchResult result);
 
     /**
      * 加载更多搜索结果
      *
      * @param result
      */
-    void onMoreLoaded(List<SearchResult> result);
+    void onMoreLoaded(SearchResult result);
 
     /**
      * 加载更多错误
@@ -48,5 +49,5 @@ public interface ISearchCallback extends IBaseCallback {
      *
      * @param hotWords
      */
-    void getHotWordsSuccess(List<String> hotWords);
+    void getHotWordsSuccess(List<HotWordsContent.DataBean > hotWords);
 }

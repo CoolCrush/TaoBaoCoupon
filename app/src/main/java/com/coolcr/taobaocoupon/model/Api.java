@@ -3,7 +3,9 @@ package com.coolcr.taobaocoupon.model;
 
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.model.domain.HotWordsContent;
 import com.coolcr.taobaocoupon.model.domain.OnSellContent;
+import com.coolcr.taobaocoupon.model.domain.SearchResult;
 import com.coolcr.taobaocoupon.model.domain.SelectedContent;
 import com.coolcr.taobaocoupon.model.domain.SelectedPageCategory;
 import com.coolcr.taobaocoupon.model.domain.TicketParams;
@@ -13,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface Api {
@@ -42,4 +45,12 @@ public interface Api {
 
     @GET
     Call<OnSellContent> getOnSellContent(@Url String url);
+
+    @GET("search/recommend")
+    Call<HotWordsContent> getHotWordsContent();
+
+    @GET("search")
+    Call<SearchResult> getSearchContent(@Query("page") int page, @Query("keyword") String keyword);
+
+
 }
