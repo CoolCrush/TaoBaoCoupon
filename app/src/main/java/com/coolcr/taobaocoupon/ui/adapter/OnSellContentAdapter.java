@@ -52,6 +52,14 @@ public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdap
         notifyDataSetChanged();
     }
 
+    public void addData(OnSellContent moreResult) {
+        int startSize = mData.size();
+        List<OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mapData = moreResult.getData().getTbk_dg_optimus_material_response().getResult_list().getMap_data();
+        int itemCount = mapData.size();
+        mData.addAll(mapData);
+        notifyItemRangeChanged(startSize - 1, itemCount);
+    }
+
     public class InnerHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.on_sell_cover_img)

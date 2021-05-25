@@ -15,7 +15,10 @@ import com.coolcr.taobaocoupon.presenter.impl.OnSellPagePresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.OnSellContentAdapter;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
+import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.IOnSellPageCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import butterknife.BindView;
 
@@ -31,6 +34,9 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
 
     @BindView(R.id.on_sell_content_list)
     RecyclerView contentList;
+    @BindView(R.id.on_sell_refresh_layout)
+    TwinklingRefreshLayout refreshLayout;
+
     private OnSellContentAdapter mContentAdapter;
 
     @Override
@@ -68,6 +74,23 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
                 outRect.right = SizeUtils.dip2px(getContext(), 3);
             }
         });
+
+        refreshLayout.setEnableLoadmore(true);
+        refreshLayout.setEnableRefresh(false);
+        refreshLayout.setEnableOverScroll(true);
+    }
+
+    @Override
+    protected void initListener() {
+        refreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                //去加载更多的内容
+                if (mOnSellPagePresenter != null) {
+                    mOnSellPagePresenter.loadMore();
+                }
+            }
+        });
     }
 
     @Override
@@ -79,17 +102,23 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
 
     @Override
     public void onMoreLoaded(OnSellContent moreResult) {
-
+        //加载更多结果从这里回来
+        refreshLayout.finishLoadmore();
+        //将数据添加到适配器中
+        mContentAdapter.addData(moreResult);
     }
 
     @Override
     public void onMoreLoadedError() {
-
+        ToastUtil.showToast("网络错误，请稍后重试...");
+        refreshLayout.finishLoadmore();
     }
 
     @Override
     public void onMoreLoadEmpty() {
-
+        refreshLayout.finishLoadmore();
+        ToastUtil.showToast("没有更多的内容...");
+        refreshLayout.finishLoadmore();
     }
 
     @Override

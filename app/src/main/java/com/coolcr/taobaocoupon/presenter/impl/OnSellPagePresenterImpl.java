@@ -153,8 +153,9 @@ public class OnSellPagePresenterImpl implements IOnSellPagePresenter {
                 int size = result.getData().getTbk_dg_optimus_material_response().getResult_list().getMap_data().size();
                 if (size == 0) {
                     mViewCallback.onMoreLoadEmpty();
+                    mCurrentPage--;
                 } else {
-                    onMoreLoaded(result);
+                    mViewCallback.onMoreLoaded(result);
                 }
             } catch (Exception e) {
                 onMoreLoadError();
