@@ -1,9 +1,10 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Rect;
-import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -14,14 +15,13 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.SelectedContent;
 import com.coolcr.taobaocoupon.model.domain.SelectedPageCategory;
-import com.coolcr.taobaocoupon.presenter.ITicketPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.SelectedPagePresenterImpl;
-import com.coolcr.taobaocoupon.ui.activity.TicketActivity;
 import com.coolcr.taobaocoupon.ui.adapter.SelectedPageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.SelectedPageLeftAdapter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
+import com.coolcr.taobaocoupon.utils.TicketUtil;
 import com.coolcr.taobaocoupon.view.ISelectedCallback;
 
 import butterknife.BindView;
@@ -36,6 +36,9 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
 
     @BindView(R.id.content_list)
     RecyclerView contentList;
+
+    @BindView(R.id.fragment_title_tv)
+    TextView fragmentTitleTv;
 
     private SelectedPagePresenterImpl mSelectedPagePresenter;
     private SelectedPageLeftAdapter mLeftAdapter;
@@ -70,6 +73,11 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
     }
 
     @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_with_bar_layout, container, false);
+    }
+
+    @Override
     protected void initView(View rootView) {
         setUpState(State.SUCCESS);
         //左边列表
@@ -87,9 +95,9 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
                 outRect.top = SizeUtils.dip2px(parent.getContext(), 4);
                 outRect.right = SizeUtils.dip2px(parent.getContext(), 8);
                 outRect.left = SizeUtils.dip2px(parent.getContext(), 8);
-
             }
         });
+        fragmentTitleTv.setText(R.string.text_selected_title);
     }
 
     @Override
@@ -110,17 +118,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedCallback 
             @Override
             public void onItemClick(SelectedContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean) {
                 LogUtils.d(SelectedFragment.this, "click title -- > " + dataBean.getTitle());
-                String title = dataBean.getTitle();
-                // 详情的地址
-                String url = dataBean.getCoupon_click_url();
-                if (TextUtils.isEmpty(url)) {
-                    url = dataBean.getClick_url();
-                }
-                String cover = dataBean.getPict_url();
-                // 拿到ticketPresenter对象
-                ITicketPresenter ticketPresenter = PresenterManger.getInstance().getTicketPresenter();
-                ticketPresenter.getTicket(title, url, cover);
-                startActivity(new Intent(getContext(), TicketActivity.class));
+                TicketUtil.toTicketPage(getContext(), dataBean);
             }
         });
     }

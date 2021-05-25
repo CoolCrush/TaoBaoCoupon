@@ -1,9 +1,7 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,8 +18,6 @@ import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
 import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
-import com.coolcr.taobaocoupon.presenter.ITicketPresenter;
-import com.coolcr.taobaocoupon.ui.activity.TicketActivity;
 import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
 import com.coolcr.taobaocoupon.ui.custom.AutoLoopViewPager;
@@ -29,6 +25,7 @@ import com.coolcr.taobaocoupon.utils.Constants;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
+import com.coolcr.taobaocoupon.utils.TicketUtil;
 import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -345,17 +342,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
      * @param item
      */
     private void handleItemClick(HomePagerContent.DataBean item) {
-        String title = item.getTitle();
-        // 详情的地址
-        String url = item.getCoupon_click_url();
-        if (TextUtils.isEmpty(url)) {
-            url = item.getClick_url();
-        }
-        String cover = item.getPict_url();
-        // 拿到ticketPresenter对象
-        ITicketPresenter ticketPresenter = PresenterManger.getInstance().getTicketPresenter();
-        ticketPresenter.getTicket(title, url, cover);
-        startActivity(new Intent(getContext(), TicketActivity.class));
+        TicketUtil.toTicketPage(getContext(), item);
     }
 
     @Override

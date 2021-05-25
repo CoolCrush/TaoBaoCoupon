@@ -92,7 +92,7 @@ public class OnSellContent {
                     this.map_data = map_data;
                 }
 
-                public static class MapDataBean {
+                public static class MapDataBean implements IBaseInfo {
                     private Integer category_id;
                     private Object category_name;
                     private String click_url;
@@ -296,8 +296,18 @@ public class OnSellContent {
                         this.small_images = small_images;
                     }
 
+                    @Override
+                    public String getCover() {
+                        return pict_url;
+                    }
+
                     public String getTitle() {
                         return title;
+                    }
+
+                    @Override
+                    public String getUrl() {
+                        return coupon_click_url;
                     }
 
                     public void setTitle(String title) {

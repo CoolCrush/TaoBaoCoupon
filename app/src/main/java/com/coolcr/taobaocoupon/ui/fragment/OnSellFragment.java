@@ -3,7 +3,10 @@ package com.coolcr.taobaocoupon.ui.fragment;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +23,7 @@ import com.coolcr.taobaocoupon.ui.adapter.OnSellContentAdapter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
+import com.coolcr.taobaocoupon.utils.TicketUtil;
 import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.IOnSellPageCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -41,6 +45,8 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
     RecyclerView contentList;
     @BindView(R.id.on_sell_refresh_layout)
     TwinklingRefreshLayout refreshLayout;
+    @BindView(R.id.fragment_title_tv)
+    TextView fragmentTitleTv;
 
     private OnSellContentAdapter mContentAdapter;
 
@@ -62,7 +68,12 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
 
     @Override
     protected int getRootViewResId() {
-        return R.layout.fragment_red_packet;
+        return R.layout.fragment_on_sell;
+    }
+
+    @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_with_bar_layout, container, false);
     }
 
     @Override
@@ -83,6 +94,7 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
         refreshLayout.setEnableLoadmore(true);
         refreshLayout.setEnableRefresh(false);
         refreshLayout.setEnableOverScroll(true);
+        fragmentTitleTv.setText(R.string.text_on_sell_title);
     }
 
     @Override
@@ -100,17 +112,7 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
             @Override
             public void onSellItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean) {
                 LogUtils.d(OnSellFragment.this, "click title -- > " + dataBean.getTitle());
-                String title = dataBean.getTitle();
-                // 详情的地址
-                String url = dataBean.getCoupon_click_url();
-                if (TextUtils.isEmpty(url)) {
-                    url = dataBean.getClick_url();
-                }
-                String cover = dataBean.getPict_url();
-                // 拿到ticketPresenter对象
-                ITicketPresenter ticketPresenter = PresenterManger.getInstance().getTicketPresenter();
-                ticketPresenter.getTicket(title, url, cover);
-                startActivity(new Intent(getContext(), TicketActivity.class));
+                TicketUtil.toTicketPage(getContext(), dataBean);
             }
         });
     }
