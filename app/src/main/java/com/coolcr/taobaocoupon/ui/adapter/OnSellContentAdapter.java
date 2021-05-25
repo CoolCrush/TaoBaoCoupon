@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdapter.InnerHolder> {
 
     private List<OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mData = new ArrayList<>();
+    private OnSellPageItemClickListener mSellPageItemClickListener = null;
 
     @NonNull
     @Override
@@ -38,6 +39,14 @@ public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdap
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean mapDataBean = mData.get(position);
         holder.setData(mapDataBean);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mSellPageItemClickListener != null) {
+                    mSellPageItemClickListener.onSellItemClick(mapDataBean);
+                }
+            }
+        });
     }
 
     @Override
@@ -92,5 +101,13 @@ public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdap
             offPriceTv.setText(String.format("卷后价：%.1f", offPrice));
 
         }
+    }
+
+    public void setSellPageItemClickListener(OnSellPageItemClickListener sellPageItemClickListener) {
+        mSellPageItemClickListener = sellPageItemClickListener;
+    }
+
+    public interface OnSellPageItemClickListener {
+        void onSellItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean data);
     }
 }

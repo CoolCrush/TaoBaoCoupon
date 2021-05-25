@@ -1,6 +1,8 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.OnSellContent;
+import com.coolcr.taobaocoupon.presenter.ITicketPresenter;
 import com.coolcr.taobaocoupon.presenter.impl.OnSellPagePresenterImpl;
+import com.coolcr.taobaocoupon.ui.activity.TicketActivity;
 import com.coolcr.taobaocoupon.ui.adapter.OnSellContentAdapter;
+import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
 import com.coolcr.taobaocoupon.utils.ToastUtil;
@@ -89,6 +94,23 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
                 if (mOnSellPagePresenter != null) {
                     mOnSellPagePresenter.loadMore();
                 }
+            }
+        });
+        mContentAdapter.setSellPageItemClickListener(new OnSellContentAdapter.OnSellPageItemClickListener() {
+            @Override
+            public void onSellItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean) {
+                LogUtils.d(OnSellFragment.this, "click title -- > " + dataBean.getTitle());
+                String title = dataBean.getTitle();
+                // 详情的地址
+                String url = dataBean.getCoupon_click_url();
+                if (TextUtils.isEmpty(url)) {
+                    url = dataBean.getClick_url();
+                }
+                String cover = dataBean.getPict_url();
+                // 拿到ticketPresenter对象
+                ITicketPresenter ticketPresenter = PresenterManger.getInstance().getTicketPresenter();
+                ticketPresenter.getTicket(title, url, cover);
+                startActivity(new Intent(getContext(), TicketActivity.class));
             }
         });
     }
