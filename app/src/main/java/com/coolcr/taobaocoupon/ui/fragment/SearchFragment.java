@@ -1,16 +1,46 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
+import com.coolcr.taobaocoupon.model.domain.HotWordsContent;
+import com.coolcr.taobaocoupon.model.domain.SearchResult;
+import com.coolcr.taobaocoupon.presenter.impl.SearchPresenterImpl;
+import com.coolcr.taobaocoupon.utils.LogUtils;
+import com.coolcr.taobaocoupon.utils.PresenterManger;
+import com.coolcr.taobaocoupon.view.ISearchCallback;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment {
+public class SearchFragment extends BaseFragment implements ISearchCallback {
+
+    private SearchPresenterImpl mSearchPresenter;
+
+    @Override
+    protected void initPresenter() {
+        mSearchPresenter = PresenterManger.getInstance().getSearchPresenter();
+        mSearchPresenter.registerViewCallback(this);
+
+        // 获取搜索推荐词
+        mSearchPresenter.getHotWords();
+        mSearchPresenter.doSearch("手机");
+        mSearchPresenter.getHistories();
+    }
+
+    @Override
+    protected void release() {
+        if (mSearchPresenter != null) {
+            mSearchPresenter.registerViewCallback(this);
+        }
+    }
 
     @Override
     protected int getRootViewResId() {
@@ -18,7 +48,62 @@ public class SearchFragment extends BaseFragment {
     }
 
     @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_search_layout, container, false);
+    }
+
+    @Override
     protected void initView(View rootView) {
         setUpState(State.SUCCESS);
+    }
+
+    @Override
+    public void onHistoriesLoaded(List<String> histories) {
+        LogUtils.d(this, "histories -- > " + histories.toString());
+    }
+
+    @Override
+    public void onHistoriesDeleted() {
+
+    }
+
+    @Override
+    public void onSearchSuccess(SearchResult result) {
+        LogUtils.d(this, "search result size -- > " + result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data().size());
+    }
+
+    @Override
+    public void onMoreLoaded(SearchResult result) {
+
+    }
+
+    @Override
+    public void onMoreLoadError() {
+
+    }
+
+    @Override
+    public void onMoreLoadEmpty() {
+
+    }
+
+    @Override
+    public void getHotWordsSuccess(List<HotWordsContent.DataBean> hotWords) {
+        LogUtils.d(this, "hot words -- > " + hotWords.toString());
+    }
+
+    @Override
+    public void onLoading() {
+
+    }
+
+    @Override
+    public void onError() {
+
+    }
+
+    @Override
+    public void onEmpty() {
+
     }
 }

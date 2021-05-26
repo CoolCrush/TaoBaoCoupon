@@ -77,21 +77,22 @@ public class SearchPresenterImpl implements ISearchPresenter {
         if (historiesList == null) {
             historiesList = new ArrayList<>();
         }
-        histories.setHistories(historiesList);
         if (historiesList.size() > historiesMaxSize) {
-            historiesList.subList(0, historiesMaxSize);
+            historiesList = historiesList.subList(0, historiesMaxSize);
         }
         //添加记录
         historiesList.add(history);
 
-        mJsonCacheUtil.saveCache(KEY_HISTORIES, historiesList);
+        histories.setHistories(historiesList);
+
+        mJsonCacheUtil.saveCache(KEY_HISTORIES, histories);
     }
 
     @Override
     public void doSearch(String keyword) {
         this.mCurrentKeyword = keyword;
         this.saveHistory(keyword);
-        
+
         if (mViewCallback != null) {
             mViewCallback.onLoading();
         }
@@ -102,7 +103,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
                 int code = response.code();
                 if (code == HttpURLConnection.HTTP_OK) {
                     if (mViewCallback != null) {
-                        handleMoreSearchResult(response.body());
+                        handleSearchResult(response.body());
                     }
                 } else {
                     onError();
@@ -195,7 +196,7 @@ public class SearchPresenterImpl implements ISearchPresenter {
                 int code = response.code();
                 if (code == HttpURLConnection.HTTP_OK) {
                     if (mViewCallback != null) {
-                        handleSearchResult(response.body());
+                        handleMoreSearchResult(response.body());
                     }
                 } else {
                     onLoadMoreError();

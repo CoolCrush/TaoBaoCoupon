@@ -44,14 +44,14 @@ public class JsonCacheUtil {
     }
 
     public <T> T getValue(String key, Class<T> clazz) {
-        String valueWithDuration = mSharedPreferences.getString(key, "");
+        String valueWithDuration = mSharedPreferences.getString(key, null);
         if (valueWithDuration == null) {
             return null;
         }
         CacheWithDuration cacheWithDuration = mGson.fromJson(valueWithDuration, CacheWithDuration.class);
         //对事件进行判断
         long duration = cacheWithDuration.getDuration();
-        if (duration != -1 && duration - System.currentTimeMillis() < 0) {
+        if (duration != -1 && duration - System.currentTimeMillis() <= 0) {
             //数据过期了
             return null;
         } else {

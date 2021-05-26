@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cool="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,5 +17,12 @@
     <com.coolcr.taobaocoupon.ui.custom.LoadingView
         android:layout_width="33dp"
         android:layout_height="33dp" />
+
+    <com.coolcr.taobaocoupon.ui.custom.TextFlowLayout
+        android:id="@+id/test_text_flow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        cool:horizontalSpace="20px"
+        cool:verticalSpace="20px" />
 
 </LinearLayout>

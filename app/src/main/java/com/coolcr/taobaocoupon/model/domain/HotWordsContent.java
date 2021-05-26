@@ -46,6 +46,15 @@ public class HotWordsContent {
         private String keyword;
         private String createTime;
 
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id='" + id + '\'' +
+                    ", keyword='" + keyword + '\'' +
+                    ", createTime='" + createTime + '\'' +
+                    '}';
+        }
+
         public String getId() {
             return id;
         }
