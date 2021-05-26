@@ -67,8 +67,8 @@ public class TextFlowLayout extends ViewGroup {
         //释放资源
         typedArray.recycle();
 
-        LogUtils.d(this, "mItemHorizontalSpace -- > " + mItemHorizontalSpace);
-        LogUtils.d(this, "mItemVerticalSpace -- > " + mItemVerticalSpace);
+        //LogUtils.d(this, "mItemHorizontalSpace -- > " + mItemHorizontalSpace);
+        //LogUtils.d(this, "mItemVerticalSpace -- > " + mItemVerticalSpace);
     }
 
     public void setTextList(List<String> textList) {
@@ -97,6 +97,11 @@ public class TextFlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        if (getChildCount() == 0) {
+            return;
+        }
+
         //这是描述单行
         List<View> line = null;
         lines.clear();
@@ -113,10 +118,10 @@ public class TextFlowLayout extends ViewGroup {
                 continue;
             }
             //测量前
-            LogUtils.d(this, "height -- > " + itemView.getMeasuredHeight());
+            //LogUtils.d(this, "height -- > " + itemView.getMeasuredHeight());
             measureChild(itemView, widthMeasureSpec, heightMeasureSpec);
             //测量后
-            LogUtils.d(this, "height -- > " + itemView.getMeasuredHeight());
+            //LogUtils.d(this, "height -- > " + itemView.getMeasuredHeight());
 
             if (line == null) {
                 //说明当前行空，可以添加
