@@ -42,6 +42,12 @@ public class TestActivity extends AppCompatActivity {
         textList.add("bilibili");
         textList.add("iphone");
         textFlow.setTextList(textList);
+        textFlow.setOnFlowTextItemClickListener(new TextFlowLayout.OnFlowTextItemClickListener() {
+            @Override
+            public void onFlowItemClick(String text) {
+                ToastUtil.showToast(text);
+            }
+        });
     }
 
     private void initListener() {

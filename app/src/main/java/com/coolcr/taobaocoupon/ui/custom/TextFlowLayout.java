@@ -23,6 +23,8 @@ public class TextFlowLayout extends ViewGroup {
     private int mSelfWidth;
     private int mItemHeight;
 
+    private OnFlowTextItemClickListener mItemClickListener = null;
+
     /**
      * 暴露方法让外部去设置相关属性
      *
@@ -76,6 +78,12 @@ public class TextFlowLayout extends ViewGroup {
             //添加子View
             TextView item = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.flow_text_view, this, false);
             item.setText(text);
+            item.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.onFlowItemClick(text);
+                }
+            });
             addView(item);
         }
     }
@@ -177,5 +185,14 @@ public class TextFlowLayout extends ViewGroup {
             }
             topOffset += mItemHeight + mItemHorizontalSpace;
         }
+
+    }
+
+    public void setOnFlowTextItemClickListener(OnFlowTextItemClickListener itemClickListener) {
+        this.mItemClickListener = itemClickListener;
+    }
+
+    public interface OnFlowTextItemClickListener {
+        void onFlowItemClick(String text);
     }
 }
