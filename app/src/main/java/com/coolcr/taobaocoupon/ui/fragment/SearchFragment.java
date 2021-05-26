@@ -3,12 +3,14 @@ package com.coolcr.taobaocoupon.ui.fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
+import com.coolcr.taobaocoupon.model.domain.Histories;
 import com.coolcr.taobaocoupon.model.domain.HotWordsContent;
 import com.coolcr.taobaocoupon.model.domain.SearchResult;
 import com.coolcr.taobaocoupon.presenter.impl.SearchPresenterImpl;
@@ -36,6 +38,9 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
     TextFlowLayout searchHistoryView;
     @BindView(R.id.search_recommend_container)
     LinearLayout searchRecommendContainer;
+
+    @BindView(R.id.history_delete_btn)
+    ImageView historyDeleteBtn;
 
     private SearchPresenterImpl mSearchPresenter;
 
@@ -73,19 +78,29 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
     }
 
     @Override
-    public void onHistoriesLoaded(List<String> histories) {
-        LogUtils.d(this, "histories -- > " + histories.toString());
-        if (histories == null || histories.size() == 0) {
+    protected void initListener() {
+        historyDeleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //清空历史记录
+                mSearchPresenter.delHistories();
+            }
+        });
+    }
+
+    @Override
+    public void onHistoriesLoaded(Histories histories) {
+        if (histories == null || histories.getHistories().size() == 0) {
             searchHistoryContainer.setVisibility(View.GONE);
         } else {
             searchHistoryContainer.setVisibility(View.VISIBLE);
-            searchHistoryView.setTextList(histories);
+            searchHistoryView.setTextList(histories.getHistories());
         }
     }
 
     @Override
     public void onHistoriesDeleted() {
-
+        mSearchPresenter.getHistories();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.coolcr.taobaocoupon.view;
 
 import com.coolcr.taobaocoupon.base.IBaseCallback;
+import com.coolcr.taobaocoupon.model.domain.Histories;
 import com.coolcr.taobaocoupon.model.domain.HotWordsContent;
 import com.coolcr.taobaocoupon.model.domain.SearchResult;
 
@@ -13,7 +14,7 @@ public interface ISearchCallback extends IBaseCallback {
      *
      * @param histories
      */
-    void onHistoriesLoaded(List<String> histories);
+    void onHistoriesLoaded(Histories histories);
 
     /**
      * 删除历史记录
