@@ -118,10 +118,10 @@ public class SearchResult {
                     private Long num_iid;
                     private String pict_url;
                     private Object presale_deposit;
-                    private Integer presale_end_time;
-                    private Integer presale_start_time;
-                    private Integer presale_tail_end_time;
-                    private Integer presale_tail_start_time;
+                    private long presale_end_time;
+                    private long presale_start_time;
+                    private long presale_tail_end_time;
+                    private long presale_tail_start_time;
                     private String provcity;
                     private String real_post_fee;
                     private String reserve_price;
@@ -344,7 +344,7 @@ public class SearchResult {
                         this.presale_deposit = presale_deposit;
                     }
 
-                    public Integer getPresale_end_time() {
+                    public long getPresale_end_time() {
                         return presale_end_time;
                     }
 
@@ -352,7 +352,7 @@ public class SearchResult {
                         this.presale_end_time = presale_end_time;
                     }
 
-                    public Integer getPresale_start_time() {
+                    public long getPresale_start_time() {
                         return presale_start_time;
                     }
 
@@ -360,7 +360,7 @@ public class SearchResult {
                         this.presale_start_time = presale_start_time;
                     }
 
-                    public Integer getPresale_tail_end_time() {
+                    public long getPresale_tail_end_time() {
                         return presale_tail_end_time;
                     }
 
@@ -368,7 +368,7 @@ public class SearchResult {
                         this.presale_tail_end_time = presale_tail_end_time;
                     }
 
-                    public Integer getPresale_tail_start_time() {
+                    public long getPresale_tail_start_time() {
                         return presale_tail_start_time;
                     }
 

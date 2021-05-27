@@ -16,6 +16,7 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Histories;
 import com.coolcr.taobaocoupon.model.domain.HotWordsContent;
+import com.coolcr.taobaocoupon.model.domain.IBaseInfo;
 import com.coolcr.taobaocoupon.model.domain.SearchResult;
 import com.coolcr.taobaocoupon.presenter.impl.SearchPresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.LinearItemContentAdapter;
@@ -23,7 +24,10 @@ import com.coolcr.taobaocoupon.ui.custom.TextFlowLayout;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
+import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.ISearchCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +54,9 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
 
     @BindView(R.id.search_result_list)
     RecyclerView searchResultList;
+
+    @BindView(R.id.search_result_container)
+    TwinklingRefreshLayout searchRefreshLayout;
 
     private SearchPresenterImpl mSearchPresenter;
     private LinearItemContentAdapter mSearchResultAdapter;
@@ -95,6 +102,10 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
                 outRect.bottom = SizeUtils.dip2px(getContext(), 2);
             }
         });
+        //刷新控件
+        searchRefreshLayout.setEnableRefresh(false);
+        searchRefreshLayout.setEnableLoadmore(true);
+        searchRefreshLayout.setEnableOverScroll(true);
     }
 
     @Override
@@ -106,10 +117,27 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
                 mSearchPresenter.delHistories();
             }
         });
+
+        mSearchResultAdapter.setOnListItemClickListener(new LinearItemContentAdapter.OnListItemClickListener() {
+            @Override
+            public void onItemClick(IBaseInfo item) {
+
+            }
+        });
+
+        searchRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                if (mSearchPresenter != null) {
+                    mSearchPresenter.loaderMore();
+                }
+            }
+        });
     }
 
     @Override
     public void onHistoriesLoaded(Histories histories) {
+        setUpState(State.SUCCESS);
         if (histories == null || histories.getHistories().size() == 0) {
             searchHistoryContainer.setVisibility(View.GONE);
         } else {
@@ -130,6 +158,7 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
      */
     @Override
     public void onSearchSuccess(SearchResult result) {
+        setUpState(State.SUCCESS);
         LogUtils.d(this, "search result size -- > " + result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data().size());
         //隐藏掉历史记录和推荐
         searchHistoryContainer.setVisibility(View.GONE);
@@ -141,21 +170,24 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
 
     @Override
     public void onMoreLoaded(SearchResult result) {
-
+        //加载更多成功
+        mSearchResultAdapter.addData(result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data());
+        searchRefreshLayout.finishLoadmore();
     }
 
     @Override
     public void onMoreLoadError() {
-
+        ToastUtil.showToast("网络异常，请稍后重试");
     }
 
     @Override
     public void onMoreLoadEmpty() {
-
+        ToastUtil.showToast("没有更多数据...");
     }
 
     @Override
     public void getHotWordsSuccess(List<HotWordsContent.DataBean> hotWords) {
+        setUpState(State.SUCCESS);
         LogUtils.d(this, "hot words -- > " + hotWords.toString());
         List<String> recommendWords = new ArrayList<>();
         for (HotWordsContent.DataBean hotWord : hotWords) {
@@ -171,16 +203,16 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
 
     @Override
     public void onLoading() {
-
+        setUpState(State.LOADING);
     }
 
     @Override
     public void onError() {
-
+        setUpState(State.ERROR);
     }
 
     @Override
     public void onEmpty() {
-
+        setUpState(State.EMPTY);
     }
 }
