@@ -1,10 +1,12 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -20,6 +22,7 @@ import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.view.IHomeCallback;
 import com.google.android.material.tabs.TabLayout;
+import com.vondear.rxfeature.activity.ActivityScanerCode;
 
 import butterknife.BindView;
 
@@ -36,6 +39,9 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
     @BindView(R.id.home_search_input_box)
     EditText homeSearchInputBox;
+
+    @BindView(R.id.scan_btn)
+    ImageView scanBtn;
 
     private IHomePresenter mHomePresenter;
     private HomePagerAdapter mHomePagerAdapter;
@@ -83,6 +89,13 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
                 if (activity != null) {
                     ((MainActivity) activity).switch2Search();
                 }
+            }
+        });
+        scanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ActivityScanerCode.class);
+                startActivity(intent);
             }
         });
     }

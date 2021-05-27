@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.coolcr.taobaocoupon">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,6 +26,10 @@
         <activity
             android:name=".ui.activity.TicketActivity"
             android:launchMode="singleTop">
+
+        </activity>
+
+        <activity android:name="com.vondear.rxfeature.activity.ActivityScanerCode">
 
         </activity>
     </application>
