@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.model.domain.IBaseInfo;
+import com.coolcr.taobaocoupon.model.domain.ILinearItemInfo;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.UrlUtils;
 
@@ -24,9 +26,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContentAdapter.InnerHolder> {
+public class LinearItemContentAdapter extends RecyclerView.Adapter<LinearItemContentAdapter.InnerHolder> {
 
-    List<HomePagerContent.DataBean> mDataBeans = new ArrayList<>();
+    List<ILinearItemInfo> mDataBeans = new ArrayList<>();
 
     private int testCount = 0;
     private OnListItemClickListener mItemClickListener = null;
@@ -37,22 +39,21 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
         testCount++;
         // 一开始绘制的条数
         //LogUtils.d(this, "onCreateViewHolder..." + testCount);
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_linear_goods_content, parent, false);
         return new InnerHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         //LogUtils.d(this, "onBindViewHolder... position -- > " + position);
-        HomePagerContent.DataBean dataBean = mDataBeans.get(position);
+        ILinearItemInfo dataBean = mDataBeans.get(position);
         // 设置数据
         holder.setData(dataBean);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HomePagerContent.DataBean item = mDataBeans.get(position);
-                mItemClickListener.onItemClick(item);
+                mItemClickListener.onItemClick(dataBean);
             }
         });
     }
@@ -62,7 +63,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
         return mDataBeans.size();
     }
 
-    public void setData(List<HomePagerContent.DataBean> contents) {
+    public void setData(List<? extends ILinearItemInfo> contents) {
         mDataBeans.clear();
         mDataBeans.addAll(contents);
         // 数据更新时刷新
@@ -102,7 +103,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
         }
 
         @SuppressLint("DefaultLocale")
-        public void setData(HomePagerContent.DataBean dataBean) {
+        public void setData(ILinearItemInfo dataBean) {
             Context context = itemView.getContext();
 
             tvTitle.setText(dataBean.getTitle());
@@ -113,11 +114,11 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             //LogUtils.d(this, "width -- > " + width);
             //LogUtils.d(this, "height -- > " + height);
             // 加载图片，pic没有https:头
-            String coverPath = UrlUtils.getCoverPath(dataBean.getPict_url(), coverSize);
+            String coverPath = UrlUtils.getCoverPath(dataBean.getCover(), coverSize);
             //LogUtils.d(this, "url -- > " + coverPath);
             Glide.with(context).load(coverPath).into(imgCover);
-            int couponAmount = dataBean.getCoupon_amount();
-            String finalPrice = dataBean.getZk_final_price();
+            long couponAmount = dataBean.getCouponAmount();
+            String finalPrice = dataBean.getFinalPrice();
             // 字符串模板
             tvOffPrice.setText(String.format(context.getString(R.string.text_goods_off_price), couponAmount));
             tvOriginalPrice.setText(String.format("￥%1$s", finalPrice));
@@ -136,6 +137,6 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     }
 
     public interface OnListItemClickListener {
-        void onItemClick(HomePagerContent.DataBean item);
+        void onItemClick(IBaseInfo item);
     }
 }

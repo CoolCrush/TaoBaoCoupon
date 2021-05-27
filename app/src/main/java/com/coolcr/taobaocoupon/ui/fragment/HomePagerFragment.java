@@ -17,8 +17,9 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.model.domain.HomePagerContent;
+import com.coolcr.taobaocoupon.model.domain.IBaseInfo;
 import com.coolcr.taobaocoupon.presenter.ICategoryPagerPresenter;
-import com.coolcr.taobaocoupon.ui.adapter.HomePageContentAdapter;
+import com.coolcr.taobaocoupon.ui.adapter.LinearItemContentAdapter;
 import com.coolcr.taobaocoupon.ui.adapter.LooperPagerAdapter;
 import com.coolcr.taobaocoupon.ui.custom.AutoLoopViewPager;
 import com.coolcr.taobaocoupon.utils.Constants;
@@ -36,11 +37,11 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback, HomePageContentAdapter.OnListItemClickListener, LooperPagerAdapter.OnLooperPagerItemClickListener {
+public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback, LinearItemContentAdapter.OnListItemClickListener, LooperPagerAdapter.OnLooperPagerItemClickListener {
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int mMaterialId;
-    private HomePageContentAdapter mContentAdapter;
+    private LinearItemContentAdapter mContentAdapter;
     private LooperPagerAdapter mLooperPagerAdapter;
 
     public HomePagerFragment newInstance(Categories.DataBean category) {
@@ -105,12 +106,12 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         mContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = 8;
-                outRect.bottom = 8;
+                outRect.top = SizeUtils.dip2px(getContext(), 2);
+                outRect.bottom = SizeUtils.dip2px(getContext(), 2);
             }
         });
         // 创建适配器
-        mContentAdapter = new HomePageContentAdapter();
+        mContentAdapter = new LinearItemContentAdapter();
         // 设置适配器
         mContentList.setAdapter(mContentAdapter);
 
@@ -330,7 +331,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     }
 
     @Override
-    public void onItemClick(HomePagerContent.DataBean item) {
+    public void onItemClick(IBaseInfo item) {
         // 列表内容被点击了
         LogUtils.d(this, "item click -- >" + item.getTitle());
         handleItemClick(item);
@@ -341,7 +342,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
      *
      * @param item
      */
-    private void handleItemClick(HomePagerContent.DataBean item) {
+    private void handleItemClick(IBaseInfo item) {
         TicketUtil.toTicketPage(getContext(), item);
     }
 

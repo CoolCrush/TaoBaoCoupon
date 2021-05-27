@@ -48,7 +48,7 @@ public class HomePagerContent {
         this.data = data;
     }
 
-    public static class DataBean implements IBaseInfo {
+    public static class DataBean implements ILinearItemInfo {
         @Override
         public String toString() {
             return "DataBean{" +
@@ -114,7 +114,7 @@ public class HomePagerContent {
         private Object category_name;
         private String click_url;
         private String commission_rate;
-        private int coupon_amount;
+        private long coupon_amount;
         private String coupon_click_url;
         private String coupon_end_time;
         private Object coupon_info;
@@ -169,7 +169,7 @@ public class HomePagerContent {
             this.commission_rate = commission_rate;
         }
 
-        public int getCoupon_amount() {
+        public long getCoupon_amount() {
             return coupon_amount;
         }
 
@@ -337,6 +337,16 @@ public class HomePagerContent {
 
         public void setUser_type(int user_type) {
             this.user_type = user_type;
+        }
+
+        @Override
+        public String getFinalPrice() {
+            return zk_final_price;
+        }
+
+        @Override
+        public long getCouponAmount() {
+            return coupon_amount;
         }
 
         public int getVolume() {
