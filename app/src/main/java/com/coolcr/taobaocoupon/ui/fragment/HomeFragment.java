@@ -17,12 +17,12 @@ import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.presenter.IHomePresenter;
 import com.coolcr.taobaocoupon.ui.activity.MainActivity;
+import com.coolcr.taobaocoupon.ui.activity.ScanQrCodeActivity;
 import com.coolcr.taobaocoupon.ui.adapter.HomePagerAdapter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.view.IHomeCallback;
 import com.google.android.material.tabs.TabLayout;
-import com.vondear.rxfeature.activity.ActivityScanerCode;
 
 import butterknife.BindView;
 
@@ -42,6 +42,8 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
     @BindView(R.id.scan_btn)
     ImageView scanBtn;
+    @BindView(R.id.search_btn)
+    ImageView searchBtn;
 
     private IHomePresenter mHomePresenter;
     private HomePagerAdapter mHomePagerAdapter;
@@ -94,8 +96,18 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ActivityScanerCode.class);
+                Intent intent = new Intent(getContext(), ScanQrCodeActivity.class);
                 startActivity(intent);
+            }
+        });
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到搜索页面
+                FragmentActivity activity = getActivity();
+                if (activity != null) {
+                    ((MainActivity) activity).switch2Search();
+                }
             }
         });
     }
