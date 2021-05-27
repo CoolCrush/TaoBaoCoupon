@@ -12,6 +12,7 @@ import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TextFlowLayout extends ViewGroup {
@@ -46,6 +47,7 @@ public class TextFlowLayout extends ViewGroup {
         this.mItemVerticalSpace = itemVerticalSpace;
     }
 
+
     private List<String> mTextList = new ArrayList<>();
 
     public TextFlowLayout(Context context) {
@@ -72,7 +74,10 @@ public class TextFlowLayout extends ViewGroup {
     }
 
     public void setTextList(List<String> textList) {
-        this.mTextList = textList;
+        removeAllViews();
+        this.mTextList.clear();
+        this.mTextList.addAll(textList);
+        Collections.reverse(mTextList);
         //遍历内容
         for (String text : mTextList) {
             //添加子View
@@ -88,6 +93,9 @@ public class TextFlowLayout extends ViewGroup {
         }
     }
 
+    public List<String> getTextList() {
+        return mTextList;
+    }
 
     //这是描述所有的行
     private List<List<View>> lines = new ArrayList<>();

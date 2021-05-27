@@ -11,6 +11,7 @@
         android:background="#fff5a623">
 
         <EditText
+            android:id="@+id/search_input_box"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
@@ -19,8 +20,21 @@
             android:layout_weight="1"
             android:background="@drawable/shape_edit_box_bg"
             android:hint="@string/text_search_tips"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
             android:paddingLeft="20dp"
+            android:singleLine="true"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/search_remove_img"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/search_btn"
+            android:src="@mipmap/remove"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/search_btn"

@@ -1,11 +1,18 @@
 package com.coolcr.taobaocoupon.ui.fragment;
 
 import android.graphics.Rect;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,6 +28,7 @@ import com.coolcr.taobaocoupon.model.domain.SearchResult;
 import com.coolcr.taobaocoupon.presenter.impl.SearchPresenterImpl;
 import com.coolcr.taobaocoupon.ui.adapter.LinearItemContentAdapter;
 import com.coolcr.taobaocoupon.ui.custom.TextFlowLayout;
+import com.coolcr.taobaocoupon.utils.KeyboardUtil;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
@@ -38,7 +46,14 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SearchFragment extends BaseFragment implements ISearchCallback {
+public class SearchFragment extends BaseFragment implements ISearchCallback, TextFlowLayout.OnFlowTextItemClickListener {
+
+    @BindView(R.id.search_input_box)
+    EditText searchInputBox;
+    @BindView(R.id.search_btn)
+    TextView searchBtn;
+    @BindView(R.id.search_remove_img)
+    ImageView searchRemoveImg;
 
     @BindView(R.id.search_recommend_view)
     TextFlowLayout searchRecommendView;
@@ -70,7 +85,6 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
         // 获取搜索推荐词
         mSearchPresenter.getHotWords();
         mSearchPresenter.getHistories();
-        mSearchPresenter.doSearch("书包");
     }
 
     @Override
@@ -111,6 +125,21 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
 
     @Override
     protected void initListener() {
+        searchHistoryView.setOnFlowTextItemClickListener(this);
+        searchRecommendView.setOnFlowTextItemClickListener(this);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String keyword = searchInputBox.getText().toString().trim();
+                if (searchInputBox.getText().toString().trim().length() > 0) {
+                    mSearchPresenter.doSearch(keyword);
+                    searchResultList.scrollToPosition(0);
+                    KeyboardUtil.hide(getContext(), v);
+                } else {
+                    KeyboardUtil.hide(getContext(), v);
+                }
+            }
+        });
         historyDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +164,70 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
                 }
             }
         });
+        searchRemoveImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchInputBox.setText("");
+                //回到历史记录页面
+                switch2HistoryPage();
+            }
+        });
+        searchInputBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > 0) {
+                    searchRemoveImg.setVisibility(View.VISIBLE);
+                    searchBtn.setText("搜索");
+                } else {
+                    searchRemoveImg.setVisibility(View.GONE);
+                    searchBtn.setText("取消");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        searchInputBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                LogUtils.d(this, "actionId -- > " + actionId);
+                if (actionId == EditorInfo.IME_ACTION_SEARCH && mSearchPresenter != null) {
+                    //点击键盘上的搜索按钮
+                    String searchWord = v.getText().toString().trim();
+                    if (TextUtils.isEmpty(searchWord)) {
+                        return false;
+                    }
+                    LogUtils.d(this, "searchWord -- > " + searchWord);
+                    mSearchPresenter.doSearch(searchWord);
+                    searchResultList.scrollToPosition(0);
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * 切换历史和推荐页面
+     */
+    private void switch2HistoryPage() {
+
+        if (mSearchPresenter != null) {
+            mSearchPresenter.getHistories();
+        }
+
+
+        List<String> recommendList = searchRecommendView.getTextList();
+        if (recommendList.size() != 0) {
+            searchRecommendContainer.setVisibility(View.VISIBLE);
+        }
+        searchResultList.setVisibility(View.GONE);
     }
 
     @Override
@@ -224,5 +317,19 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
     @Override
     public void onEmpty() {
         setUpState(State.EMPTY);
+    }
+
+    /**
+     * 点击热门搜索，历史搜素
+     *
+     * @param text
+     */
+    @Override
+    public void onFlowItemClick(String text) {
+        if (mSearchPresenter != null) {
+            searchResultList.scrollToPosition(0);
+            mSearchPresenter.doSearch(text);
+            searchInputBox.setText(text);
+        }
     }
 }
