@@ -24,6 +24,7 @@ import com.coolcr.taobaocoupon.ui.custom.TextFlowLayout;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
 import com.coolcr.taobaocoupon.utils.SizeUtils;
+import com.coolcr.taobaocoupon.utils.TicketUtil;
 import com.coolcr.taobaocoupon.utils.ToastUtil;
 import com.coolcr.taobaocoupon.view.ISearchCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -121,7 +122,8 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
         mSearchResultAdapter.setOnListItemClickListener(new LinearItemContentAdapter.OnListItemClickListener() {
             @Override
             public void onItemClick(IBaseInfo item) {
-
+                //item被点击了
+                TicketUtil.toTicketPage(getContext(), item);
             }
         });
 
@@ -133,6 +135,14 @@ public class SearchFragment extends BaseFragment implements ISearchCallback {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onRetryClick() {
+        //重新加载
+        if (mSearchPresenter != null) {
+            mSearchPresenter.reSearch();
+        }
     }
 
     @Override
