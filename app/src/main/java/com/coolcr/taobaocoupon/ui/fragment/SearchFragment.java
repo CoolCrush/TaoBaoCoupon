@@ -330,6 +330,9 @@ public class SearchFragment extends BaseFragment implements ISearchCallback, Tex
             searchResultList.scrollToPosition(0);
             mSearchPresenter.doSearch(text);
             searchInputBox.setText(text);
+            searchInputBox.setFocusable(true);
+            searchInputBox.setSelection(text.length());
+            searchInputBox.setSelection(text.length(), text.length());
         }
     }
 }

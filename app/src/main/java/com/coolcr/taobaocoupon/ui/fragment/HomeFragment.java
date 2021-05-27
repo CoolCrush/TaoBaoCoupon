@@ -4,14 +4,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import com.coolcr.taobaocoupon.R;
 import com.coolcr.taobaocoupon.base.BaseFragment;
 import com.coolcr.taobaocoupon.model.domain.Categories;
 import com.coolcr.taobaocoupon.presenter.IHomePresenter;
+import com.coolcr.taobaocoupon.ui.activity.MainActivity;
 import com.coolcr.taobaocoupon.ui.adapter.HomePagerAdapter;
 import com.coolcr.taobaocoupon.utils.LogUtils;
 import com.coolcr.taobaocoupon.utils.PresenterManger;
@@ -30,6 +33,9 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
 
     @BindView(R.id.home_pager)
     ViewPager mHomePager;
+
+    @BindView(R.id.home_search_input_box)
+    EditText homeSearchInputBox;
 
     private IHomePresenter mHomePresenter;
     private HomePagerAdapter mHomePagerAdapter;
@@ -65,6 +71,20 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         // 创建Presenter
         mHomePresenter = PresenterManger.getInstance().getHomePresenter();
         mHomePresenter.registerViewCallback(this);
+    }
+
+    @Override
+    protected void initListener() {
+        homeSearchInputBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //跳转到搜索页面
+                FragmentActivity activity = getActivity();
+                if (activity != null) {
+                    ((MainActivity) activity).switch2Search();
+                }
+            }
+        });
     }
 
     @Override
